@@ -2,10 +2,13 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { Language } from '@/locales';
 import styles from './Header.module.css';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
@@ -18,8 +21,28 @@ export default function Header() {
         </Link>
         
         <div className={styles.rightActions}>
+          <select 
+            value={language} 
+            onChange={(e) => {
+              setLanguage(e.target.value as Language);
+              closeMenu();
+            }}
+            className={styles.langSelect}
+          >
+            <option value="ko">Kr</option>
+            <option value="en">En</option>
+            <option value="ja">Jp</option>
+            <option value="zh-CN">简中</option>
+            <option value="zh-TW">繁中</option>
+            <option value="es">Es</option>
+            <option value="vi">Vi</option>
+            <option value="it">It</option>
+            <option value="fr">Fr</option>
+            <option value="tr">Tr</option>
+          </select>
+
           <a href="#reserve" className={styles.reserveBtn} onClick={closeMenu}>
-            예약하기
+            {t.calendar.reserveBtn}
           </a>
           
           <button 
@@ -37,10 +60,10 @@ export default function Header() {
       {isMenuOpen && (
         <div className={styles.mobileMenu}>
           <nav className={styles.mobileNav}>
-            <a href="#intro" onClick={closeMenu}>탱고스테이 스토리</a>
-            <a href="#location" onClick={closeMenu}>숙소 위치</a>
-            <a href="#guide" onClick={closeMenu}>상세 정보 및 이용 안내</a>
-            <a href="#contact" onClick={closeMenu}>문의하기</a>
+            <a href="#intro" onClick={closeMenu}>{t.header.story}</a>
+            <a href="#location" onClick={closeMenu}>{t.header.location}</a>
+            <a href="#guide" onClick={closeMenu}>{t.header.guide}</a>
+            <a href="#contact" onClick={closeMenu}>{t.header.contact}</a>
           </nav>
         </div>
       )}

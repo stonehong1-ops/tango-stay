@@ -3,10 +3,12 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { submitReservation } from '@/lib/api';
+import { useLanguage } from '@/contexts/LanguageContext';
 import styles from './page.module.css';
 
 function ReserveForm() {
   const router = useRouter();
+  const { t } = useLanguage();
   const searchParams = useSearchParams();
   
   const checkIn = searchParams.get('checkIn');
@@ -21,10 +23,10 @@ function ReserveForm() {
 
   useEffect(() => {
     if (!checkIn || !checkOut) {
-      alert("비정상적인 접근입니다. 달력에서 예약 날짜를 먼저 선택해주세요.");
+      alert(t.calendar.hintSelectDates);
       router.push('/');
     }
-  }, [checkIn, checkOut, router]);
+  }, [checkIn, checkOut, router, t]);
 
   if (!checkIn || !checkOut) return null;
 
@@ -76,12 +78,8 @@ function ReserveForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim()) {
-      alert("이름(예약자명)을 입력해주세요.");
-      return;
-    }
-    if (!phone.trim()) {
-      alert("연락처를 입력해주세요.");
+    if (!name.trim() || !phone.trim()) {
+      alert(t.reserve.errorFill);
       return;
     }
 
@@ -101,7 +99,7 @@ function ReserveForm() {
     if (result.success || !process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
       router.push('/complete');
     } else {
-      alert('예약 요청 중 오류가 발생했습니다.');
+      alert(t.reserve.errorFail);
       setIsSubmitting(false);
     }
   };
@@ -109,39 +107,57 @@ function ReserveForm() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <button onClick={() => router.push('/#reserve')} className={styles.backBtn}>&larr; 돌아가기</button>
-        <h1 className={styles.title}>예약 정보 입력</h1>
+        <button onClick={() => router.push('/#reserve')} className={styles.backBtn}>&larr; {t.calendar.clearBtn}</button>
+        <h1 className={styles.title}>{t.reserve.title}</h1>
         <p className={styles.routeDesc}>
-          {checkIn} ~ {checkOut} / {guests}명 / {totalAmount.toLocaleString()}원
+          {checkIn} ~ {checkOut} / {guests}{t.reserve.guests} / {totalAmount.toLocaleString()}{t.calendar.won}
         </p>
       </header>
 
       <div className={styles.content}>
         <div className={styles.formSection}>
           <div className={styles.paymentGuide}>
-            <h3>💳 무통장 입금 안내</h3>
-            <p className={styles.account}>카카오뱅크 3333-03-7249602 홍병석</p>
-            <p className={styles.warning}><strong>예약 접수 후 10분 이내에 입금</strong>하셔야 예약이 최종 확정됩니다.</p>
+            <h3>💳 {t.calendar.feeGuideTitle} (Deposit)</h3>
+            <p className={styles.account}>KakaoBank 3333-03-7249602 (Hong Byeong-seok)</p>
+            <p className={styles.warning}><strong>{t.complete.desc}</strong></p>
           </div>
 
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.formGroup}>
-              <label htmlFor="name">이름 (입금자명)</label>
-              <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="입금자명과 동일하게 입력하세요" />
+              <label htmlFor="name">{t.reserve.nameLabel}</label>
+              <input 
+                type="text" 
+                id="name" 
+                value={name} 
+                onChange={(e) => setName(e.target.value)} 
+                placeholder={t.reserve.namePlace} 
+              />
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="phone">연락처</label>
-              <input type="tel" id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="010-0000-0000" />
+              <label htmlFor="phone">{t.reserve.phoneLabel}</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                value={phone} 
+                onChange={(e) => setPhone(e.target.value)} 
+                placeholder={t.reserve.phonePlace} 
+              />
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="message">요청사항 / 메모</label>
-              <textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} rows={3} placeholder="입금자명이 다를 경우 꼭 남겨주세요." />
+              <label htmlFor="message">{t.reserve.reqLabel}</label>
+              <textarea 
+                id="message" 
+                value={message} 
+                onChange={(e) => setMessage(e.target.value)} 
+                rows={3} 
+                placeholder={t.reserve.reqPlace} 
+              />
             </div>
 
             <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
-              {isSubmitting ? '접수 중...' : '예약 접수하기'}
+              {isSubmitting ? t.reserve.submitting : t.reserve.submitBtn}
             </button>
           </form>
         </div>
@@ -151,8 +167,9 @@ function ReserveForm() {
 }
 
 export default function ReservePage() {
+  const { t } = useLanguage();
   return (
-    <Suspense fallback={<div style={{ padding: '5rem', textAlign: 'center' }}>로딩 중...</div>}>
+    <Suspense fallback={<div style={{ padding: '5rem', textAlign: 'center' }}>...</div>}>
       <ReserveForm />
     </Suspense>
   );

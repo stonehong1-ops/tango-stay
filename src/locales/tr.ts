@@ -1,0 +1,182 @@
+export default {
+  header: {
+    story: 'TangoStay Hikayesi',
+    location: 'Konum',
+    guide: 'Detaylar & Rehber',
+    contact: 'İletişim',
+  },
+  hero: {
+    subtitle: 'Hapjeong İstasyonu\'na 1 dk mesafede, Hangang Parkı yürüme mesafesinde, sessiz ve huzurlu konaklama yeriniz'
+  },
+  gallery: {
+    more: 'Daha fazla fotoğraf gör',
+    categories: ['Hepsi', 'Oturma Odası', 'Yatak Odası', 'Mutfak', 'Banyo', 'Manzara'],
+    descriptions: [
+      'Oturma odası, Çalışma masası (Makyaj masası), 2 kişilik yemek masası',
+      'Yüksek tavanlı premium stüdyo daire',
+      'Dinlenme ve yemek için mükemmel düzen',
+      '2026 Samsung Smart TV M7 / Çalışma & Makyaj Masası',
+      'Ücretsiz Premium TV & OTT kanalları (Kişisel giriş yapılabilir)',
+      'Kakao Park Akıllı Hoparlör',
+      'IKEA Premium Yatak Takımı (Queen Boy)',
+      'Yatak odası TV\'si',
+      'Yatırılabilir Masaj Koltuğu (Yüksek Performans)',
+      'IKEA yatak takımlı Ace Tek Kişilik Yatak',
+      '3 misafir kapasiteli (oturma odası kanepesi kullanılabilir)',
+      'Su arıtma cihazı, pişirme kapları, baharatlar, tek kullanımlık malzemeler tam donanımlı',
+      'Samsung Buzdolabı & Çamaşır Makinesi',
+      'Ayrı lavabo, tuvalet ve duş odası',
+      'Şampuan, saç kremi, vücut şampuanı sağlanır',
+      'Bide mevcuttur',
+      'Han Nehri manzarası & serin nehir esintisi',
+      'Hangang Parkı\'na 1 dakika mesafe',
+      'Han Nehri ve şehir manzarası'
+    ]
+  },
+  calendar: {
+    title: 'Rezervasyon Durumu',
+    checkin: 'Giriş',
+    checkout: 'Çıkış',
+    reserveBtn: 'Hemen Rezerve Et',
+    Sun: 'Paz', Mon: 'Pzt', Tue: 'Sal', Wed: 'Çar', Thu: 'Per', Fri: 'Cum', Sat: 'Cmt',
+    booked: 'Rezerve Edildi',
+    available: 'Uygun',
+    selected: 'Seçili',
+    priceInfo: 'Akıllı Giriş / Temel 2 kişi (Maks 3)',
+    basePrice: 'Hafta içi: 90,000 KRW / Hafta sonu: 120,000 KRW',
+    totalPrice: 'Toplam Fiyat',
+    surcharge: 'Hafta sonu/Tatil ek ücreti dahildir',
+    clearBtn: 'Seçimi Temizle',
+    days: 'Gece',
+    won: 'KRW',
+    blockedAlert: '[Tamamen Dolu]\nMisafir:',
+    period: 'Dönem:',
+    invalidRange: 'Seçtiğiniz tarih aralığında rezerve edilmiş günler bulunmaktadır. Lütfen tekrar deneyin.',
+    hintSelectOut: 'Lütfen bir çıkış tarihi seçin!',
+    feeGuideTitle: 'Fiyat Rehberi',
+    feeGuideLines: [
+      'Gecelik 80,000 KRW (1 Kişi)',
+      'Her ek misafir için +10,000 KRW (Maks 4)',
+      'Hafta sonları ve tatillerde +10,000 KRW',
+      '30,000 KRW temizlik ücreti',
+      '7+ gece konaklamalar için 20,000 KRW indirim'
+    ],
+    hintSelectDates: 'Kesin toplam fiyatı görmek için takvimden tarih seçin.',
+    guestSelectLabel: 'Misafir Sayısı',
+    guestOptions: ['1 Misafir (Temel)', '2 Misafir (+10k/gece)', '3 Misafir (+20k/gece)', '4 Misafir (Maks, +30k/gece)'],
+    finalPriceTitle: 'Toplam Final Fiyat',
+    baseFee: 'Temel Gecelik Ücret',
+    guestFee: 'Ek Misafir Ücreti',
+    weekendFee: 'Hafta sonu/Tatil Ek Ücreti',
+    cleaningFee: 'Temizlik Ücreti',
+    longStayDiscount: 'Uzun Konaklama İndirimi',
+    proceedBtn: 'Rezervasyon İşlemine Devam Et'
+  },
+  location: {
+    title: 'Konum',
+    addressLabel: 'Adres:',
+    bldgLabel: 'Bina:',
+    address: '13 Yanghwa-ro, Mapo-gu, Seul',
+    bldg: 'Hapjeong Square Riverview',
+    naver: 'Naver Map\'te Aç',
+    kakao: 'Kakao Map\'te Aç'
+  },
+  intro: {
+    title: 'TangoStay Hikayesi',
+    subtitle: '"Sadece kendinizi getirin"... TangoStay\'in [Issız Ada Deneyi]\'ni tanıtıyoruz.',
+    p1: 'Bir ev sahibi olarak bu alanı oluştururken tek hedefim "Issız Ada Deneyi" idi. Tek bir valizle girip dışarı hiç çıkmadan bir haftadan fazla süre boyunca mükemmel konforda yaşayabileceğiniz bir alan. Bu alanı, bir misafir olarak yaşadığım sayısız zorluğu tamamen çözmek için tasarladım.',
+    sol1Title: 'Konaklama Paketi: SIFIR rahatsızlık, Hoş geldin hediye kutusu',
+    sol1Text: 'Artık başkasının kullandığı havlu veya sabun konusunda endişelenmeyin. Her misafirimize yepyeni havlular, mutfak bezleri, sabun ve diş fırçası setleri sağlıyoruz - otel konforunda, hepsi yepyeni. İlk gününüzde markete koşmanıza gerek yok.',
+    sol2Title: 'Artık Su Derdi Yok! Premium Su Arıtma Cihazı',
+    sol2Text: 'Ağır su şişelerini taşımaktan kendinizi kurtarın. Her an sınırsız temiz, serin su sağlayan son teknoloji bir su arıtma cihazı kurulmuştur.',
+    sol3Title: 'Tavizsiz Temizlik (Profesyonel Laundrygo Hizmeti)',
+    sol3Text: 'Tüm yatak takımları (yorgan, nevresim, çarşaf, yastık kılıfları) ve halılar ikişer set olarak hazırlanır ve her yeni misafir için Laundrygo tarafından profesyonelce yıkanıp yüksek sıcaklıkta sterilize edilir. Tertemiz yatak takımlarında derin bir uyku deneyimi yaşayın.',
+    closing: 'Sizi gerçekten dinlenmek için en konforlu yer olan "Issız Ada"ma davet etmek için sabırsızlanıyorum.',
+    hostName: '👋 Ben Arjantinli Tango Dansçısı Stone.',
+    hostBio: 'İşletme ve Yapay Zeka alanlarında eğitim aldım ve muhtemelen her gün kullandığınız birçok ünlü uygulamanın baş planlamacısı olarak çalıştım.\n\nSon zamanlarda kurumsal hayatı bıraktım ve hayatımın geri kalanını Tango eğitmeni ve araştırmacısı olarak geçirmeye karar verdim. Harika konaklama deneyimleri oluşturmak için 1. ve 2. şubelerimi hazırlıyorum. Herhangi bir rahatsızlık hissederseniz lütfen bana bildirin, alanı geliştirmeye devam edeceğim.'
+  },
+  guide: {
+    title: 'Detaylar & Rehber',
+    subtitle: '"Hazırlıksız günlük hayatınıza başlayabilmeniz için her şeyi donattık"',
+    acc1Title: '✨ Odanın Önemli Özellikleri',
+    acc1List: [
+      { t: 'Panoramik Manzaralı Yeni Yapı Kalitesi', d: 'Hapjeong/Hongdae bölgesindeki en yeni ve en temiz stüdyo daireden olağanüstü Han Nehri manzarasının tadını çıkarın.' },
+      { t: 'Tavizsiz Temizlik', d: 'Yatak takımları ve halılar her seferinde Laundrygo tarafından profesyonelce yıkanır. İç mekan buharlı temizliği yapılır ve tüm havlu/mutfak bezleri %100 yenileriyle değiştirilir.' },
+      { t: 'Premium Dinlenme Mobilyaları', d: 'İki geniş yatak (Queen, Super Single), rahat kanepe ve yüksek performanslı yatırılabilir masaj koltuğu.' },
+      { t: 'Zengin Eğlence', d: 'Oturma odasında 2026 Samsung Moving Style Smart TV ve yatak odasında ek bir TV bulunmaktadır.' }
+    ],
+    quote1: '"Han Nehri gece manzarasını seyrederken masaj koltuğunun keyfini çıkarın~"',
+    acc2Title: '📍 Elverişli Konum & Ulaşım (Ücretsiz Otopark)',
+    acc2List: [
+      { t: 'Çok Merkezi Konum', d: 'Hapjeong İstasyonu\'na 1 dk yürüme mesafesinde. Hongdae/Sinchon\'a yürüme/metro/otobüs ile hızlı erişim (Hongdae\'ye 10 dk yürüme mesafesi).' },
+      { t: 'Ulaşım Merkezi', d: 'Seul genelinde hareket eden tüm otobüslerin kesişim noktası. (Mangwon İstasyonu, Hongdae İstasyonu hepsi bitişik)' },
+      { t: 'Rahat Otopark', d: 'Arabanızı getirin ve ücretsiz park edin. (30,000 KRW\'lik aylık ücreti ev sahibi karşılar)' },
+      { t: 'Sürüş & Taksi', d: 'Gangnam, Ilsan, Yeouido yönündeki Gangbyeon otoyoluna girmek sadece 1 dakika sürer.' }
+    ],
+    acc3Title: '🛋️ Olanaklar & Tesisler (Ücretsiz Sarf Malzemeleri)',
+    baseOptions: 'Temel Beyaz Eşya/Mobilya',
+    baseOptionsDesc: 'Buzdolabı, Çamaşır Makinesi, Klima, Smart TV (2 adet), Giga Wi-Fi, Lavabo, İndüksiyon ocak, Queen & Super Single yataklar',
+    addOptions: 'Ek Tesisler',
+    addOptionsDesc: 'Güvenli Kapı Kilidi, CCTV/Yönetim Ofisi, Yemek Masası, Su Arıtma Cihazı, Kanepe, Geniş Çalışma Masası, Geniş Gardırop, Ayakkabılık',
+    freeTitle: '✨ Tüm Sarf Malzemeleri Ücretsiz Sağlanır!!!',
+    freeDesc: 'Ramen, hazır pirinç, tuvalet kağıdı, kağıt mendil, diş fırçası/macunu setleri, şampuan/saç kremi, vücut şampuanı, el sabunu sağlanır.\nÇamaşır askısını, deterjanı, yumuşatıcıyı ve çöp/geri dönüşüm torbalarını özgürce ücretsiz kullanın!',
+    acc4Title: '🛡️ Oda Kuralları & Ev Sahibi ile İletişim',
+    acc4List: [
+      { t: '🔓 Giriş / Çıkış (Esnek)', d: 'Temassız giriş. Şifre ve oda bilgileri giriş günü mesajla gönderilir.\nStandart: Giriş 15:00 / Çıkış 11:00 (Konforunuz için ayarlanabilir!)' },
+      { t: '🏠 Kesin Kurallar', d: 'Tüm binada KESİNLİKLE SİGARA İÇİLMEZ. İhlaller durumunda özel temizlik ücreti uygulanır.\nLütfen çıkış yapmadan önce çöpleri ayırın ve bulaşıkları yıkayın.\nYeni inşa edilmiş bir stüdyo olduğu için lütfen 22:00\'den sonra yüksek sesten kaçının.' },
+      { t: '🤩 7/24 Ev Sahibi İletişimi', d: 'Sabahın erken saatlerinde bile bana her zaman ulaşabilirsiniz! Rahatsız hissederseniz mesaj atmaktan çekinmeyin.\nKonaklamanız sırasında temel bir ihtiyacınız eksikse bana bildirin. Aynı gün satın alıp teslim edeceğim.' }
+    ],
+    acc5Title: '🛍️ Mahalle Yaşamı & Gezilecek Yerler',
+    acc5List: [
+      { t: 'Hapjeong / Hongdae Bölgesi', d: 'Hapjeong\'daki en iyi restoran ve kafelerin ve Hongdae\'nin canlı sokaklarının bitişiğinde.' },
+      { t: 'Elverişli Süpermarketler', d: 'Hızlı alışverişler için Wang Mart 1 dk mesafededir. Diğer her şey için Homeplus Mega Mart 5 dk yürüme mesafesindedir.' },
+      { t: 'İstediğiniz Zaman Han Nehri\'ne Kaçın', d: 'Hangang Parkı girişine 1 dk yürüme mesafesi. Mangwon Hangang Parkı ile doğrudan bağlantılı.' }
+    ]
+  },
+  contact: {
+    title: 'İletişim',
+    desc: 'Sorularınız olursa lütfen istediğiniz zaman ulaşın.',
+    call: 'Ara',
+    sms: 'SMS',
+    kakao: 'Kakao Chat',
+    whatsapp: 'WhatsApp',
+    fb: 'FB Messenger',
+    callDesc: '010-7209-2468 (Stone)',
+    smsDesc: 'Hızlı yanıt garantisi',
+    kakaoDesc: 'ID: stonehong@kakao.com',
+    whatsappDesc: 'Global Misafirler İçin',
+    fbDesc: 'Facebook Mesajı'
+  },
+  footer: {
+    term: 'Kullanım Koşulları',
+    privacy: 'Gizlilik Politikası',
+    termTitle: '[Kullanım Koşulları]',
+    termText: `Madde 1 (Amaç)\nBu koşulların amacı, TangoStay tarafından sağlanan konaklama hizmetlerine ilişkin ev sahibi ve misafir arasındaki hak, yükümlülük ve sorumlulukları belirlemektir.\n\nMadde 2 (Hizmet Sunumu)\n1. TangoStay, misafire belirtilen konaklama alanını ve tüm yan tesisleri (ücretsiz sarf malzemeleri dahil) sağlar.\n2. Ev sahibi, konaklama yeri içindeki mülke verilen her türlü zarar için misafirden gerçek zarar tazminatı talep edebilir.\n\nMadde 3 (Misafirin Yükümlülükleri)\n1. Misafirlerin konaklama yerinde sigara içmesi veya başkalarını rahatsız edebilecek yüksek ses çıkarması (22:00'den sonra) yasaktır.\n2. İhlaller, zorunlu tahliyeye ve özel temizlik ücretine neden olabilir.`,
+    privacyTitle: '[Gizlilik Politikası]',
+    privacyText: `1. Toplanan Kişisel Bilgiler\nTangoStay, sorunsuz rezervasyon ve iletişim için aşağıdaki kişisel bilgileri toplar.\n- Toplanan kalemler: İsim, İletişim numarası, Rezervasyon zamanı\n\n2. Toplama ve Kullanım Amacı\n- Bina ve oda kapı kilit şifreleri için rehberlik\n- Ödeme ve rezervasyon onayı, konaklama kalite yönetimi için müşteri yanıtı\n\n3. Saklama Süresi\n- Prensip olarak, bilgiler amaç gerçekleştikten sonra (çıkıştan 1 ay sonra) derhal imha edilir.`
+  },
+  reserve: {
+    title: 'Rezervasyon Detayları',
+    nights: 'Gece',
+    reserveDate: 'Tarihler:',
+    totalAmount: 'Toplam Tutar:',
+    nameLabel: 'Misafir Adı',
+    namePlace: 'Tam adınızı girin',
+    phoneLabel: 'İletişim',
+    phonePlace: '010-0000-0000',
+    guestLabel: 'Misafir Sayısı',
+    guests: 'Misafir',
+    reqLabel: 'Talepler',
+    reqPlace: 'Özel bir talebiniz veya sorunuz var mı?',
+    submitBtn: 'Rezervasyonu Gönder',
+    submitting: 'İşleniyor...',
+    errorFill: 'Lütfen isim, iletişim ve misafir sayısını doldurun.',
+    errorFail: 'İşlem sırasında bir hata oluştu.'
+  },
+  complete: {
+    title: 'Rezervasyon Tamamlandı! 🎉',
+    desc: 'Ödeme ve giriş talimatları kısa süre içinde iletişim numaranıza gönderilecektir.',
+    guideBtn: 'Kullanım Rehberini Önizle',
+    homeBtn: 'Ana Sayfaya Dön'
+  }
+};

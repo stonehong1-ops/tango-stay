@@ -1,0 +1,182 @@
+export default {
+  header: {
+    story: 'TangoStay Story',
+    location: 'Location',
+    guide: 'Details & Guide',
+    contact: 'Contact Us',
+  },
+  hero: {
+    subtitle: '1 min from Hapjeong Stn, Hangang Park within walking distance, Your quiet & cozy stay'
+  },
+  gallery: {
+    more: 'View More Photos',
+    categories: ['All', 'Living', 'Bedroom', 'Kitchen', 'Bath', 'View'],
+    descriptions: [
+      'Living room, Desk (Vanity), Dining table for 2',
+      'Premium studio with high ceilings',
+      'Perfect layout for resting and dining',
+      '2026 Samsung Smart TV M7 / Desk & Vanity',
+      'Free Premium TV & OTT channels (Personal login available)',
+      'Kakao Park Smart Speaker',
+      'IKEA Premium Bedding (Queen Size)',
+      'Bedroom TV',
+      'Recliner Massage Chair (High Performance)',
+      'Ace Single Bed with IKEA Bedding',
+      'Accommodates 3 guests (Living room sofa can be used)',
+      'Water purifier, Cooking utensils, Condiments, Disposables fully equipped',
+      'Samsung Refrigerator & Washing Machine',
+      'Separated Washbasin, Toilet, and Shower room',
+      'Shampoo, Conditioner, Body wash provided',
+      'Bidet available',
+      'Han River View & Cool River Breeze',
+      '1 minute to Hangang Park',
+      'Han River View & City View'
+    ]
+  },
+  calendar: {
+    title: 'Reservation Availability',
+    checkin: 'Check-in',
+    checkout: 'Check-out',
+    reserveBtn: 'Reserve Now',
+    Sun: 'Sun', Mon: 'Mon', Tue: 'Tue', Wed: 'Wed', Thu: 'Thu', Fri: 'Fri', Sat: 'Sat',
+    booked: 'Booked',
+    available: 'Available',
+    selected: 'Selected',
+    priceInfo: 'Smart Check-in / Base 2 guests (Max 3)',
+    basePrice: 'Weekday: 90,000 KRW / Weekend: 120,000 KRW',
+    totalPrice: 'Total Price',
+    surcharge: 'Includes Weekend/Holiday Surcharge',
+    clearBtn: 'Clear Selection',
+    days: 'Nights',
+    won: 'KRW',
+    blockedAlert: '[Fully Booked]\nGuest:',
+    period: 'Period:',
+    invalidRange: 'Your selected range includes already booked dates. Please try again.',
+    hintSelectOut: 'Please select a check-out date!',
+    feeGuideTitle: 'Pricing Guide',
+    feeGuideLines: [
+      '80,000 KRW per night (1 Guest)',
+      '+10,000 KRW per additional guest (Max 4)',
+      '+10,000 KRW on Weekends & Holidays',
+      '30,000 KRW cleaning fee',
+      '20,000 KRW Discount for 7+ nights stay'
+    ],
+    hintSelectDates: 'Select dates on the calendar to see the exact total price.',
+    guestSelectLabel: 'Guests',
+    guestOptions: ['1 Guest (Base)', '2 Guests (+10k/night)', '3 Guests (+20k/night)', '4 Guests (Max, +30k/night)'],
+    finalPriceTitle: 'Total Final Price',
+    baseFee: 'Base Nightly Rate',
+    guestFee: 'Extra Guest Fee',
+    weekendFee: 'Weekend/Holiday Surcharge',
+    cleaningFee: 'Cleaning Fee',
+    longStayDiscount: 'Long Stay Discount',
+    proceedBtn: 'Proceed to Book'
+  },
+  location: {
+    title: 'Location',
+    addressLabel: 'Address:',
+    bldgLabel: 'Building:',
+    address: '13 Yanghwa-ro, Mapo-gu, Seoul',
+    bldg: 'Hapjeong Square Riverview',
+    naver: 'Open in Naver Map',
+    kakao: 'Open in Kakao Map'
+  },
+  intro: {
+    title: 'TangoStay Story',
+    subtitle: '"Just bring yourself"... Introducing TangoStay\'s [Desert Island Experiment].',
+    p1: 'My single goal in creating this space as a host was the \'Desert Island Experiment\'. A space where you can just walk in with a single suitcase and live perfectly comfortably for over a week without ever stepping outside. I designed this space to completely solve the countless inconveniences I experienced as a guest.',
+    sol1Title: 'Stay Pack: ZERO Discomfort, Welcome Gift Box',
+    sol1Text: 'Stop worrying about using someone else\'s towels or soap. We provide every guest with brand new towels, dishcloths, soap, and toothbrush sets—hotel amenity quality, all brand new. No need to run to the convenience store on your first day.',
+    sol2Title: 'No More Water Worries! Premium Water Purifier',
+    sol2Text: 'Free yourself from carrying heavy water bottles. A state-of-the-art water purifier is installed, providing unlimited clean, cool water anytime.',
+    sol3Title: 'Uncompromising Cleanliness (Professional Laundrygo)',
+    sol3Text: 'All bedding (duvet, cover, pad, pillowcases) and floor rugs are prepared in duplicates and professionally washed and high-temperature sterilized by Laundrygo for every new guest. Experience deep sleep on flawlessly clean bedding.',
+    closing: 'I look forward to welcoming you to my \'Desert Island\', the most comfortable place to truly relax.',
+    hostName: '👋 I\'m Stone, the Argentine Tango Dancer.',
+    hostBio: 'I majored in Business Administration and Artificial Intelligence, and have worked as a lead planner for many famous apps you probably use every day.\n\nRecently, I left corporate life to dedicate the rest of my life as a Tango instructor and researcher. To create wonderful stay experiences, I\'ve been preparing my 1st and 2nd branches. If you ever feel uncomfortable, please let me know and I will keep improving the space.'
+  },
+  guide: {
+    title: 'Details & Guide',
+    subtitle: '"We have equipped everything so you can start your daily life without any preparations"',
+    acc1Title: '✨ Key Highlights of the Room',
+    acc1List: [
+      { t: 'Newly Built Premium with Open Views', d: 'Enjoy exceptional Han River views from the newest and cleanest studio in the Hapjeong/Hongdae area.' },
+      { t: 'Uncompromising Cleanliness', d: 'Bedding and rugs are professionally washed by Laundrygo every time. Indoor steam cleaning, and all towels/dishcloths are 100% replaced with new ones.' },
+      { t: 'Premium Relaxation Furniture', d: 'Two spacious beds (Queen, Super Single), cozy sofa, and a high-performance recliner massage chair.' },
+      { t: 'Rich Entertainment', d: 'Living room features a 2026 Samsung Moving Style Smart TV, plus an additional TV in the bedroom.' }
+    ],
+    quote1: '"Enjoy the massage chair while watching the Han River night view~"',
+    acc2Title: '📍 Convenient Location & Transport (Free Parking)',
+    acc2List: [
+      { t: 'Super Prime Location', d: '1 min walk to Hapjeong Stn. Fast access to Hongdae/Sinchon by foot/subway/bus (10 min walk to Hongdae).' },
+      { t: 'Transportation Hub', d: 'Convergence point for all buses moving across Seoul. (Mangwon Stn, Hongdae Stn all adjacent)' },
+      { t: 'Convenient Parking', d: 'Bring your car and park for free. (Host covers the monthly 30,000 KRW fee)' },
+      { t: 'Driving & Taxi', d: 'Just 1 minute to enter Gangbyeon Expressway heading to Gangnam, Ilsan, Yeouido.' }
+    ],
+    acc3Title: '🛋️ Amenities & Facilities (Free Consumables)',
+    baseOptions: 'Basic Appliances/Furniture',
+    baseOptionsDesc: 'Refrigerator, Washing Machine, AC, Smart TVs (2), Giga Wi-Fi, Sink, Induction stove, Queen & Super Single beds',
+    addOptions: 'Additional Facilities',
+    addOptionsDesc: 'Secure Door Lock, CCTV/Management Office, Dining Table, Water Purifier, Sofa, Large Desk, Spacious Closet, Shoe Rack',
+    freeTitle: '✨ All Consumables Provided Free!!!',
+    freeDesc: 'Ramen, instant rice, toilet paper, tissues, toothbrush/toothpaste sets, shampoo/conditioner, body wash, hand wash provided.\nFreely use the laundry drying rack, detergent, fabric softener, and garbage/recycling bags!',
+    acc4Title: '🛡️ Room Guidelines & Host Communication',
+    acc4List: [
+      { t: '🔓 Check-in / Out (Flexible)', d: 'Contactless entry. Password and room info sent via message on check-in day.\nStandard: Check-in 15:00 / Check-out 11:00 (Can be adjusted for your convenience!)' },
+      { t: '🏠 Strict Rules', d: 'Absolute NO SMOKING in the entire building. Special cleaning fees apply for violations.\nPlease separate recycling and do dishes before check-out.\nAs a newly built studio, please refrain from loud noises after 22:00.' },
+      { t: '🤩 24/7 Host Communication', d: 'Contact me anytime, even early morning! Don\'t hesitate to message if you\'re uncomfortable.\nIf you are missing any essential items during your stay, let me know. I will purchase and deliver them same-day.' }
+    ],
+    acc5Title: '🛍️ Neighborhood Lifestyle & Attractions',
+    acc5List: [
+      { t: 'Hapjeong / Hongdae District', d: 'Adjacent to the best restaurants and cafes in Hapjeong and the vibrant streets of Hongdae.' },
+      { t: 'Convenient Supermarkets', d: 'Wang Mart is 1 min away for quick groceries. Homeplus Mega Mart is a 5 min walk for everything else.' },
+      { t: 'Escape to the Han River Anytime', d: '1 minute walk to the Hangang Park entrance. Closely connected to Mangwon Hangang Park.' }
+    ]
+  },
+  contact: {
+    title: 'Contact Us',
+    desc: 'Please feel free to reach out anytime if you have questions.',
+    call: 'Call',
+    sms: 'SMS',
+    kakao: 'Kakao Chat',
+    whatsapp: 'WhatsApp',
+    fb: 'FB Messenger',
+    callDesc: '010-7209-2468 (Stone)',
+    smsDesc: 'Fast response guaranteed',
+    kakaoDesc: 'ID: stonehong@kakao.com',
+    whatsappDesc: 'For Global Guests',
+    fbDesc: 'Facebook Message'
+  },
+  footer: {
+    term: 'Terms of Service',
+    privacy: 'Privacy Policy',
+    termTitle: '[Terms of Service]',
+    termText: `Article 1 (Purpose)\nThe purpose of these terms is to stipulate the rights, obligations, and responsibilities between the host and the guest regarding the accommodation services provided by TangoStay.\n\nArticle 2 (Service Provision)\n1. TangoStay provides the guest with the specified accommodation and all ancillary facilities (including free consumables).\n2. The host may claim actual damages from the guest for any damage to property within the accommodation.\n\nArticle 3 (Guest Obligations)\n1. Guests are prohibited from smoking or making loud noises (after 22:00) that may disturb others.\n2. Violations may result in forced eviction and a special cleaning fee.`,
+    privacyTitle: '[Privacy Policy]',
+    privacyText: `1. Collected Personal Information\nTangoStay collects the following personal information for smooth reservation and communication.\n- Items collected: Name, Contact number, Reservation schedule\n\n2. Purpose of Collection and Use\n- Guiding passwords for the building and room door locks\n- Payment and reservation confirmation, customer response for stay quality management\n\n3. Retention Period\n- In principle, the information is destroyed immediately after the purpose is achieved (1 month after check-out).`
+  },
+  reserve: {
+    title: 'Reservation Details',
+    nights: 'Nights',
+    reserveDate: 'Dates:',
+    totalAmount: 'Total Amount:',
+    nameLabel: 'Guest Name',
+    namePlace: 'Enter your full name',
+    phoneLabel: 'Contact',
+    phonePlace: '010-0000-0000',
+    guestLabel: 'Number of Guests',
+    guests: 'Guests',
+    reqLabel: 'Requests',
+    reqPlace: 'Any special requests or questions?',
+    submitBtn: 'Submit Reservation',
+    submitting: 'Processing...',
+    errorFill: 'Please fill in name, contact, and guest count.',
+    errorFail: 'An error occurred while processing.'
+  },
+  complete: {
+    title: 'Reservation Complete! 🎉',
+    desc: 'Payment and check-in instructions will be sent to your provided contact number shortly.',
+    guideBtn: 'Preview Usage Guide',
+    homeBtn: 'Return to Home'
+  }
+};

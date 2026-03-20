@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getReservedDates, BlockedDateInfo } from '@/lib/api';
+import { useLanguage } from '@/contexts/LanguageContext';
 import styles from './CalendarSection.module.css';
 
 export default function CalendarSection() {
   const router = useRouter();
+  const { t, language } = useLanguage();
   
   // Dates
   const [currentMonth, setCurrentMonth] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
@@ -22,13 +24,14 @@ export default function CalendarSection() {
   }, []);
 
   const handleDateClick = (dateStr: string) => {
-    const blockedInfo = blockedDates.find(b => b.date === dateStr);
-    if (blockedInfo) {
-       alert(`[예약 마감]\n예약자: ${blockedInfo.maskedName}\n기간: ${blockedInfo.checkIn} ~ ${blockedInfo.checkOut}`);
-       return;
-    }
+    const isDateBlocked = blockedDates.some(b => b.date === dateStr);
 
     if (!checkIn || (checkIn && checkOut)) {
+      if (isDateBlocked) {
+        const blockedInfo = blockedDates.find(b => b.date === dateStr);
+        alert(`${t.calendar.blockedAlert} ${blockedInfo?.maskedName}\n${t.calendar.period} ${blockedInfo?.checkIn} ~ ${blockedInfo?.checkOut}`);
+        return;
+      }
       setCheckIn(dateStr);
       setCheckOut(null);
     } else {
@@ -36,6 +39,11 @@ export default function CalendarSection() {
       const end = new Date(dateStr);
       
       if (end < start) {
+        if (isDateBlocked) {
+          const blockedInfo = blockedDates.find(b => b.date === dateStr);
+          alert(`${t.calendar.blockedAlert} ${blockedInfo?.maskedName}\n${t.calendar.period} ${blockedInfo?.checkIn} ~ ${blockedInfo?.checkOut}`);
+          return;
+        }
         setCheckIn(dateStr);
         return;
       } else if (end.getTime() === start.getTime()) {
@@ -46,7 +54,8 @@ export default function CalendarSection() {
       let temp = new Date(start);
       let isValid = true;
       while (temp < end) {
-        if (blockedDates.some(b => b.date === temp.toISOString().split('T')[0])) {
+        const tempStr = temp.toISOString().split('T')[0];
+        if (blockedDates.some(b => b.date === tempStr)) {
           isValid = false;
           break;
         }
@@ -54,8 +63,10 @@ export default function CalendarSection() {
       }
 
       if (!isValid) {
-        alert("선택하신 기간 사이에 예약된 날짜가 포함되어 있습니다. 다시 선택해 주세요.");
-        setCheckIn(dateStr);
+        alert(t.calendar.invalidRange);
+        if (!isDateBlocked) {
+          setCheckIn(dateStr);
+        }
       } else {
         setCheckOut(dateStr);
       }
@@ -138,20 +149,31 @@ export default function CalendarSection() {
   return (
     <div className={styles.container} id="reserve">
       <header className={styles.header}>
-        <h2 className={styles.title}>실시간 예약</h2>
-        <p className={styles.desc}>원하시는 숙박 일정을 선택해주세요.</p>
+        <h2 className={styles.title}>{t.calendar.title}</h2>
+        <p className={styles.desc}>{t.contact.desc}</p>
       </header>
 
       <div className={styles.content}>
         <div className={styles.calendarSection}>
           <div className={styles.calHeader}>
             <button onClick={prevMonth} type="button" className={styles.calNav}>&lt;</button>
-            <h3 className={styles.calTitle}>{year}년 {month + 1}월</h3>
+            <h3 className={styles.calTitle}>
+              {currentMonth.toLocaleString(
+                language === 'ko' ? 'ko' : 
+                language === 'en' ? 'en' : 
+                language === 'ja' ? 'ja' : 
+                language === 'zh-CN' ? 'zh-Hans' : 
+                language === 'zh-TW' ? 'zh-Hant' : language,
+                { year: 'numeric', month: 'long' }
+              )}
+            </h3>
             <button onClick={nextMonth} type="button" className={styles.calNav}>&gt;</button>
           </div>
           
           <div className={styles.weekdays}>
-            {['일', '월', '화', '수', '목', '금', '토'].map(d => <div key={d}>{d}</div>)}
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+              <div key={d}>{t.calendar[d as keyof typeof t.calendar]}</div>
+            ))}
           </div>
           
           <div className={styles.daysGrid}>
@@ -188,79 +210,79 @@ export default function CalendarSection() {
             })}
           </div>
           <div className={styles.legend}>
-            <span className={styles.legItem}><span className={styles.box} /> 예약 가능</span>
-            <span className={styles.legItem}><span className={`${styles.box} ${styles.booked}`} /> 예약 마감</span>
-            <span className={styles.legItem}><span className={`${styles.box} ${styles.selected}`} /> 선택됨</span>
+            <span className={styles.legItem}><span className={styles.box} /> {t.calendar.available}</span>
+            <span className={styles.legItem}><span className={`${styles.box} ${styles.booked}`} /> {t.calendar.booked}</span>
+            <span className={styles.legItem}><span className={`${styles.box} ${styles.selected}`} /> {t.calendar.selected}</span>
           </div>
           
           {!checkOut && checkIn && (
-            <p className={styles.calHint}>체크아웃 날짜를 선택해주세요!</p>
+            <p className={styles.calHint}>{t.calendar.hintSelectOut}</p>
           )}
         </div>
 
         <div className={styles.reserveAction}>
           {(!checkIn || !checkOut) ? (
             <div className={styles.baseInfoList}>
-              <h3>이용 요금 안내</h3>
+              <h3>{t.calendar.feeGuideTitle}</h3>
               <ul>
-                <li><strong>1인 1박 8만원</strong></li>
-                <li>1인 추가 시 1만원 추가 (최대 4인)</li>
-                <li>금, 토, 공휴일 1만원 추가</li>
-                <li>퇴실 청소비 3만원</li>
-                <li>1주 (7일 이상) 예약 시 <strong>2만원 장기 숙박 할인</strong></li>
+                <li><strong>{t.calendar.feeGuideLines[0]}</strong></li>
+                <li>{t.calendar.feeGuideLines[1]}</li>
+                <li>{t.calendar.feeGuideLines[2]}</li>
+                <li>{t.calendar.feeGuideLines[3]}</li>
+                <li><strong>{t.calendar.feeGuideLines[4]}</strong></li>
               </ul>
-              <p className={styles.infoHint}>달력에서 날짜를 선택하시면 정확한 금액이 계산됩니다.</p>
+              <p className={styles.infoHint}>{t.calendar.hintSelectDates}</p>
             </div>
           ) : (
             <>
               {pricing && (
                 <div className={styles.pricingDetails}>
                   <div className={styles.guestSelector}>
-                    <label htmlFor="guests">투숙 인원</label>
+                    <label htmlFor="guests">{t.calendar.guestSelectLabel}</label>
                     <select 
                       id="guests" 
                       value={guests} 
                       onChange={(e) => setGuests(parseInt(e.target.value))}
                       className={styles.guestSelect}
                     >
-                      <option value={1}>1명 (기본)</option>
-                      <option value={2}>2명 (+10,000원/박)</option>
-                      <option value={3}>3명 (+20,000원/박)</option>
-                      <option value={4}>4명 (최대, +30,000원/박)</option>
+                      <option value={1}>{t.calendar.guestOptions[0]}</option>
+                      <option value={2}>{t.calendar.guestOptions[1]}</option>
+                      <option value={3}>{t.calendar.guestOptions[2]}</option>
+                      <option value={4}>{t.calendar.guestOptions[3]}</option>
                     </select>
                   </div>
 
                   <div className={styles.pricingCard}>
-                    <h3>최종 결제 금액</h3>
+                    <h3>{t.calendar.finalPriceTitle}</h3>
                     <div className={styles.priceRow}>
-                      <span>기본 숙박 요금 ({pricing.nights}박)</span>
-                      <span>{pricing.baseNightly.toLocaleString()}원</span>
+                      <span>{t.calendar.baseFee} ({pricing.nights}{t.calendar.days})</span>
+                      <span>{pricing.baseNightly.toLocaleString()}{t.calendar.won}</span>
                     </div>
                     {pricing.guestSurcharge > 0 && (
                       <div className={styles.priceRow}>
-                        <span>인원 추가 요금</span>
-                        <span>{pricing.guestSurcharge.toLocaleString()}원</span>
+                        <span>{t.calendar.guestFee}</span>
+                        <span>{pricing.guestSurcharge.toLocaleString()}{t.calendar.won}</span>
                       </div>
                     )}
                     {pricing.weekendSurcharge > 0 && (
                       <div className={styles.priceRow}>
-                        <span>주말 및 공휴일 추가</span>
-                        <span>{pricing.weekendSurcharge.toLocaleString()}원</span>
+                        <span>{t.calendar.weekendFee}</span>
+                        <span>{pricing.weekendSurcharge.toLocaleString()}{t.calendar.won}</span>
                       </div>
                     )}
                     <div className={styles.priceRow}>
-                      <span>퇴실 청소비</span>
-                      <span>{pricing.cleaningFee.toLocaleString()}원</span>
+                      <span>{t.calendar.cleaningFee}</span>
+                      <span>{pricing.cleaningFee.toLocaleString()}{t.calendar.won}</span>
                     </div>
                     {pricing.discount > 0 && (
                       <div className={`${styles.priceRow} ${styles.discount}`}>
-                        <span>장기 숙박 할인</span>
-                        <span>-{pricing.discount.toLocaleString()}원</span>
+                        <span>{t.calendar.longStayDiscount}</span>
+                        <span>-{pricing.discount.toLocaleString()}{t.calendar.won}</span>
                       </div>
                     )}
                     <div className={styles.priceTotal}>
-                      <span>총 결제 금액</span>
-                      <span>{pricing.total.toLocaleString()}원</span>
+                      <span>{t.calendar.finalPriceTitle}</span>
+                      <span>{pricing.total.toLocaleString()}{t.calendar.won}</span>
                     </div>
                   </div>
                   
@@ -268,7 +290,7 @@ export default function CalendarSection() {
                     className={styles.primaryReserveBtn}
                     onClick={handleReserveClick}
                   >
-                    예약 진행하기
+                    {t.calendar.proceedBtn}
                   </button>
                 </div>
               )}

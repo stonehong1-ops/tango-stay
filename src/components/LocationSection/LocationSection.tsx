@@ -1,12 +1,17 @@
+'use client';
+
+import { useLanguage } from '@/contexts/LanguageContext';
 import styles from './LocationSection.module.css';
 
 export default function LocationSection() {
+  const { t } = useLanguage();
+
   return (
     <section className={styles.container} id="location">
-      <h2 className={styles.title}>숙소 위치</h2>
+      <h2 className={styles.title}>{t.location.title}</h2>
       <p className={styles.address}>
-        <strong>도로명:</strong> 서울 마포구 양화로 13<br/>
-        <strong>건물명:</strong> 합정스퀘어리버뷰
+        <strong>{t.location.addressLabel}</strong> {t.location.address}<br/>
+        <strong>{t.location.bldgLabel}</strong> {t.location.bldg}
       </p>
 
       <div className={styles.mapWrapper}>
@@ -28,14 +33,14 @@ export default function LocationSection() {
           rel="noopener noreferrer"
           className={`${styles.mapBtn} ${styles.naver}`}
         >
-          네이버지도 열기
+          {t.location.naver}
         </a>
         <a 
           href="https://map.kakao.com/link/search/서울 마포구 양화로 13" 
           rel="noopener noreferrer"
           className={`${styles.mapBtn} ${styles.kakao}`}
         >
-          카카오맵 열기
+          {t.location.kakao}
         </a>
       </div>
     </section>
