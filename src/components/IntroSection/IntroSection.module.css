@@ -1,0 +1,136 @@
+.container {
+  max-width: 800px;
+  margin: 4rem auto;
+  padding: 0 1.5rem;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.15rem;
+  color: var(--secondary-foreground);
+  line-height: 1.5;
+}
+
+.storyBlock {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--foreground);
+}
+
+.leadParagraph {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px dashed var(--border);
+}
+
+.solutionList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.solutionItem {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  background-color: var(--muted);
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+
+.solIcon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.solText h4 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: var(--primary);
+}
+
+.solText p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--secondary-foreground);
+  line-height: 1.6;
+}
+
+.conclusion {
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 2rem;
+  background-color: rgba(37, 99, 235, 0.05); /* very light primary */
+  border-radius: 12px;
+  color: var(--foreground);
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background-color: var(--border);
+  margin: 3rem 0;
+}
+
+.hostProfile {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.hostAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hostInfo h3 {
+  font-size: 1.15rem;
+  margin: 0 0 0.75rem 0;
+  font-weight: 700;
+}
+
+.hostBio {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--secondary-foreground);
+}
+
+@media (max-width: 600px) {
+  .hostProfile {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}

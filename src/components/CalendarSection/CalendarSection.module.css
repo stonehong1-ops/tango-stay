@@ -1,0 +1,368 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 4rem 1.5rem 2rem;
+  text-align: center;
+  background-color: var(--muted);
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--foreground);
+}
+
+.desc {
+  font-size: 1.125rem;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+.content {
+  padding: 3rem 1.5rem 5rem;
+  max-width: 1024px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 768px) {
+  .content {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Calendar Styles */
+.calendarSection {
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.calHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.calTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.calNav {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--foreground);
+}
+
+.calNav:hover {
+  background-color: var(--muted);
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+  margin-bottom: 0.5rem;
+}
+
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+}
+
+.emptyDay {
+  aspect-ratio: 1 / 1;
+}
+
+.dayBtn {
+  aspect-ratio: 1 / 1;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--foreground);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dayBtn:hover:not(.booked) {
+  background-color: var(--muted);
+  border-color: var(--border);
+}
+
+.dayBtn.selected {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: bold;
+}
+
+.dayBtn.inRange {
+  background-color: rgba(37, 99, 235, 0.1);
+  color: var(--primary);
+}
+
+.dayBtn.booked {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  text-decoration: line-through;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.dayBtn.past {
+  color: var(--muted-foreground);
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.dayBtn.today {
+  position: relative;
+}
+
+.dayBtn.today::after {
+  content: '';
+  position: absolute;
+  bottom: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #ef4444; /* red dot */
+}
+
+.legend {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+
+.legItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.box {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+}
+
+.box.booked {
+  background-color: var(--muted);
+  opacity: 0.5;
+}
+
+.box.selected {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+/* Basic Pricing Overview Styles */
+.reserveAction {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Base Info Before Dates Selected */
+.baseInfoList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.baseInfoList h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--foreground);
+}
+
+.baseInfoList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.baseInfoList li {
+  position: relative;
+  padding-left: 1.25rem;
+  color: var(--muted-foreground);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.baseInfoList li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.baseInfoList strong {
+  color: var(--foreground);
+}
+
+.infoHint {
+  color: var(--primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 1rem 0 0;
+  background-color: rgba(37, 99, 235, 0.1);
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+/* Detailed Pricing After Dates Selected */
+.pricingDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.guestSelector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.guestSelector label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.guestSelect {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.guestSelect:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.pricingCard {
+  background-color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.pricingCard h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.125rem;
+}
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.priceRow.discount {
+  color: #10b981;
+  font-weight: 500;
+}
+
+.priceTotal {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.primaryReserveBtn {
+  width: 100%;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border: none;
+  padding: 1.25rem;
+  border-radius: var(--radius);
+  font-size: 1.125rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.primaryReserveBtn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.calHint {
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 1.5rem;
+  padding: 0.5rem;
+  background-color: rgba(37, 99, 235, 0.1);
+  border-radius: var(--radius);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}

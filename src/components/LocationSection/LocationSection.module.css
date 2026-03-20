@@ -1,0 +1,67 @@
+.container {
+  max-width: 800px;
+  margin: 4rem auto 2rem;
+  padding: 0 1.5rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--foreground);
+}
+
+.address {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  color: var(--secondary-foreground);
+  background: var(--muted);
+  padding: 1.25rem;
+  border-radius: 12px;
+}
+
+.mapWrapper {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  background-color: #eaeaea;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.mapBtn {
+  flex: 1;
+  min-width: 140px;
+  padding: 0.875rem 1rem;
+  text-align: center;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.mapBtn:hover {
+  opacity: 0.9;
+}
+
+.mapBtn:active {
+  transform: scale(0.98);
+}
+
+.naver {
+  background-color: #03C75A;
+}
+
+.kakao {
+  background-color: #FEE500;
+  color: #000;
+}

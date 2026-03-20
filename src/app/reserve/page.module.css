@@ -1,0 +1,220 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  padding: 2rem 1.5rem;
+  background-color: var(--muted);
+  position: relative;
+}
+
+.backBtn {
+  position: absolute;
+  top: 1rem;
+  left: 1.5rem;
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+
+.backBtn:hover {
+  color: var(--foreground);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 2rem 0 0.5rem 0;
+  color: var(--foreground);
+}
+
+.routeDesc {
+  font-size: 1.125rem;
+  color: var(--primary);
+  font-weight: 600;
+  margin: 0;
+}
+
+.content {
+  padding: 2rem 1.5rem 5rem;
+  max-width: 768px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.paymentGuide {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+}
+@media (prefers-color-scheme: dark) {
+  .paymentGuide {
+    background-color: #052e16;
+    border-color: #14532d;
+  }
+}
+
+.paymentGuide h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.125rem;
+  color: var(--foreground);
+}
+
+.account {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.warning {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}
+
+.warning strong {
+  color: #ef4444;
+}
+
+.pricingCard {
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.pricingCard h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.125rem;
+}
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.priceRow.discount {
+  color: #10b981;
+  font-weight: 500;
+}
+
+.priceTotal {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.priceHint {
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+  margin: 1rem 0 0 0;
+  text-align: right;
+}
+
+.form {
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: border-color 0.2s;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.submitBtn {
+  width: 100%;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border: none;
+  padding: 1.25rem;
+  border-radius: var(--radius);
+  font-size: 1.125rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: opacity 0.2s;
+}
+
+.submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.submitBtn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.adminToggleWrapper {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.adminToggleBtn {
+  background: none;
+  border: none;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.adminToggleBtn:hover {
+  color: var(--foreground);
+}
