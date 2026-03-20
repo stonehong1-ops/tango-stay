@@ -29,16 +29,16 @@ export default function Header() {
             }}
             className={styles.langSelect}
           >
-            <option value="ko">Kr</option>
-            <option value="en">En</option>
-            <option value="ja">Jp</option>
-            <option value="zh-CN">简中</option>
-            <option value="zh-TW">繁中</option>
-            <option value="es">Es</option>
-            <option value="vi">Vi</option>
-            <option value="it">It</option>
-            <option value="fr">Fr</option>
-            <option value="tr">Tr</option>
+            <option value="ko">한국어 (Korean)</option>
+            <option value="en">English (English)</option>
+            <option value="ja">日本語 (Japanese)</option>
+            <option value="zh-CN">简体中文 (Simplified Chinese)</option>
+            <option value="zh-TW">繁體中文 (Traditional Chinese)</option>
+            <option value="es">Español (Spanish)</option>
+            <option value="vi">Tiếng Việt (Vietnamese)</option>
+            <option value="it">Italiano (Italian)</option>
+            <option value="fr">Français (French)</option>
+            <option value="tr">Türkçe (Turkish)</option>
           </select>
 
           <a href="#reserve" className={styles.reserveBtn} onClick={closeMenu}>
