@@ -70,7 +70,9 @@ export default {
     weekendFee: '周末及节假日附加费',
     cleaningFee: '退房清洁费',
     longStayDiscount: '长住折扣',
-    proceedBtn: '继续预订'
+    proceedBtn: '继续预订',
+    stay: '住宿',
+    selectedDate: '选定日期'
   },
   location: {
     title: '住宿位置',

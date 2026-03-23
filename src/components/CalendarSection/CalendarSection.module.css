@@ -4,7 +4,7 @@
 }
 
 .header {
-  padding: 4rem 1.5rem 2rem;
+  padding: 2rem 1.5rem 1rem;
   text-align: center;
   background-color: var(--muted);
 }
@@ -23,13 +23,13 @@
 }
 
 .content {
-  padding: 3rem 1.5rem 5rem;
+  padding: 1.5rem 1.5rem 3rem;
   max-width: 1024px;
   margin: 0 auto;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 3rem;
+  gap: 1.5rem;
 }
 
 @media (min-width: 768px) {
@@ -119,19 +119,22 @@
   background-color: var(--primary);
   color: var(--primary-foreground);
   font-weight: bold;
+  border-radius: 4px; /* More defined shape */
 }
 
 .dayBtn.inRange {
-  background-color: rgba(37, 99, 235, 0.1);
+  background-color: rgba(37, 99, 235, 0.15); /* Slightly darker */
   color: var(--primary);
+  border-radius: 0; /* Continuous range look */
 }
 
 .dayBtn.booked {
-  background-color: var(--muted);
-  color: var(--muted-foreground);
+  background-color: #f3f4f6;
+  color: #9ca3af;
   text-decoration: line-through;
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: 1; /* Reset opacity to make it more distinct */
+  border: 1px dashed #d1d5db; /* Add dashed border for clarity */
 }
 
 .dayBtn.past {
@@ -253,11 +256,35 @@
   color: var(--primary);
   font-size: 0.9rem;
   font-weight: 600;
-  margin: 1rem 0 0;
-  background-color: rgba(37, 99, 235, 0.1);
+  margin: 0.5rem 0 0;
+  background-color: rgba(37, 99, 235, 0.05);
   padding: 0.75rem;
   border-radius: var(--radius);
   text-align: center;
+}
+
+/* Stay Info Box */
+.stayInfoBox {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  padding: 1rem;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stayDates {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.stayNights {
+  font-size: 0.85rem;
+  opacity: 0.9;
 }
 
 /* Detailed Pricing After Dates Selected */

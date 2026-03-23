@@ -70,7 +70,9 @@ export default {
     weekendFee: 'Recargo de fin de semana/feriado',
     cleaningFee: 'Tarifa de limpieza',
     longStayDiscount: 'Descuento por estancia larga',
-    proceedBtn: 'Proceder a Reservar'
+    proceedBtn: 'Proceder a Reservar',
+    stay: 'Estancia',
+    selectedDate: 'Fechas seleccionadas'
   },
   location: {
     title: 'Ubicación',

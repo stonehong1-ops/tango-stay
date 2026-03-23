@@ -70,7 +70,9 @@ export default {
     weekendFee: 'Phụ phí Cuối tuần/Ngày lễ',
     cleaningFee: 'Phí dọn dẹp',
     longStayDiscount: 'Giảm giá lưu trú dài ngày',
-    proceedBtn: 'Tiến hành đặt phòng'
+    proceedBtn: 'Tiến hành đặt phòng',
+    stay: 'Kỳ nghỉ',
+    selectedDate: 'Ngày đã chọn'
   },
   location: {
     title: 'Vị trí',

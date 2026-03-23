@@ -69,8 +69,10 @@ export default {
     guestFee: 'Ek Misafir Ücreti',
     weekendFee: 'Hafta sonu/Tatil Ek Ücreti',
     cleaningFee: 'Temizlik Ücreti',
-    longStayDiscount: 'Uzun Konaklama İndirimi',
-    proceedBtn: 'Rezervasyon İşlemine Devam Et'
+    longStayDiscount: 'Uzun süreli konaklama indirimi',
+    proceedBtn: 'Rezervasyona devam et',
+    stay: 'Konaklama',
+    selectedDate: 'Seçilen tarihler'
   },
   location: {
     title: 'Konum',

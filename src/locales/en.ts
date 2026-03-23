@@ -70,7 +70,9 @@ export default {
     weekendFee: 'Weekend/Holiday Surcharge',
     cleaningFee: 'Cleaning Fee',
     longStayDiscount: 'Long Stay Discount',
-    proceedBtn: 'Proceed to Book'
+    proceedBtn: 'Proceed to Book',
+    stay: 'Stay',
+    selectedDate: 'Selected Dates'
   },
   location: {
     title: 'Location',

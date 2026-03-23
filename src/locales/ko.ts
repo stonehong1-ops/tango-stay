@@ -70,7 +70,9 @@ export default {
     weekendFee: '주말 및 공휴일 추가',
     cleaningFee: '퇴실 청소비',
     longStayDiscount: '장기 숙박 할인',
-    proceedBtn: '예약 진행하기'
+    proceedBtn: '예약 진행하기',
+    stay: '투숙',
+    selectedDate: '선택한 날짜'
   },
   location: {
     title: '숙소 위치',

@@ -70,7 +70,9 @@ export default {
     weekendFee: '週末および祝日追加',
     cleaningFee: '退室クリーニング費用',
     longStayDiscount: '長期滞在割引',
-    proceedBtn: '予約を進める'
+    proceedBtn: '予約を進める',
+    stay: '宿泊',
+    selectedDate: '選択された日付'
   },
   location: {
     title: 'アクセス',

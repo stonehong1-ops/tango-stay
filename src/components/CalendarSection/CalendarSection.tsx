@@ -237,6 +237,15 @@ export default function CalendarSection() {
             <>
               {pricing && (
                 <div className={styles.pricingDetails}>
+                  <div className={styles.stayInfoBox}>
+                    <div className={styles.stayDates}>
+                      {checkIn} ~ {checkOut}
+                    </div>
+                    <div className={styles.stayNights}>
+                      {pricing.nights}{t.calendar.days} {t.calendar.stay}
+                    </div>
+                  </div>
+
                   <div className={styles.guestSelector}>
                     <label htmlFor="guests">{t.calendar.guestSelectLabel}</label>
                     <select 

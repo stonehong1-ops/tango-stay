@@ -70,7 +70,9 @@ export default {
     weekendFee: 'Supplemento fine settimana/festività',
     cleaningFee: 'Spese di pulizia',
     longStayDiscount: 'Sconto per soggiorno lungo',
-    proceedBtn: 'Procedi alla prenotazione'
+    proceedBtn: 'Procedi alla prenotazione',
+    stay: 'Soggiorno',
+    selectedDate: 'Date selezionate'
   },
   location: {
     title: 'Posizione',
