@@ -225,12 +225,12 @@ export default function CalendarSection() {
               listItems.push({
                 type: 'booked',
                 start: startDayOfRes,
-                end: rEnd.getDate(), // 체크아웃 날짜 그대로 표시
+                end: endDayOfRes,
                 nights: resPrice?.nights,
                 total: resPrice?.total,
                 name: maskName(res.name)
               });
-              currentDay = rEnd.getDate();
+              currentDay = endDayOfRes;
             }
           });
 
