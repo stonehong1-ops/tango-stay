@@ -11,7 +11,7 @@ export default function CalendarSection() {
   const { t, language } = useLanguage();
   
   // View mode
-  const [viewMode, setViewMode] = useState<'calendar' | 'list'>('calendar');
+  const [isListOpen, setIsListOpen] = useState(false);
   
   // Dates
   const [currentMonth, setCurrentMonth] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
@@ -29,6 +29,18 @@ export default function CalendarSection() {
        setReservations(list);
     });
   }, []);
+
+  // 모달 오픈 시 본문 스크롤 방지
+  useEffect(() => {
+    if (isListOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isListOpen]);
 
   const handleDateClick = (dateStr: string) => {
     const isDateBlocked = blockedDates.some(b => b.date === dateStr);
@@ -180,88 +192,93 @@ export default function CalendarSection() {
     };
 
     return (
-      <div className={styles.listView}>
-        {monthsToShow.map((mDate) => {
-          const year = mDate.getFullYear();
-          const month = mDate.getMonth();
-          const daysInMonth = new Date(year, month + 1, 0).getDate();
-          
-          // 해당 월의 예약 필터링
-          const sortedReservations = reservations.filter(r => {
-            const rStart = new Date(r.checkIn);
-            const rEnd = new Date(r.checkOut);
-            const mStart = new Date(year, month, 1);
-            const mEnd = new Date(year, month, daysInMonth);
-            return (rStart <= mEnd && rEnd >= mStart);
-          }).sort((a, b) => a.checkIn.localeCompare(b.checkIn));
+      <div className={styles.modalOverlay} onClick={() => setIsListOpen(false)}>
+        <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+          <header className={styles.modalHeader}>
+            <h3>{t.calendar.viewList}</h3>
+            <button className={styles.closeBtn} onClick={() => setIsListOpen(false)} aria-label="Close">
+              &times;
+            </button>
+          </header>
+          <div className={styles.listView}>
+            {monthsToShow.map((mDate) => {
+              const year = mDate.getFullYear();
+              const month = mDate.getMonth();
+              const daysInMonth = new Date(year, month + 1, 0).getDate();
+              
+              const sortedReservations = reservations.filter(r => {
+                const rStart = new Date(r.checkIn);
+                const rEnd = new Date(r.checkOut);
+                const mStart = new Date(year, month, 1);
+                const mEnd = new Date(year, month, daysInMonth);
+                return (rStart <= mEnd && rEnd >= mStart);
+              }).sort((a, b) => a.checkIn.localeCompare(b.checkIn));
 
-          const monthLabel = mDate.toLocaleString(
-            language === 'ko' ? 'ko' : language,
-            { year: 'numeric', month: 'long' }
-          );
+              const monthLabel = mDate.toLocaleString(
+                language === 'ko' ? 'ko' : language,
+                { year: 'numeric', month: 'long' }
+              );
 
-          // 공실 및 예약 목록 생성 로직
-          const listItems: ListViewItem[] = [];
-          let currentDay = 1;
+              const listItems: ListViewItem[] = [];
+              let currentDay = 1;
 
-          sortedReservations.forEach(res => {
-            const rStart = new Date(res.checkIn);
-            const rEnd = new Date(res.checkOut);
-            
-            // 예약 시작 전 공실 확인
-            const startDayOfRes = (rStart.getFullYear() === year && rStart.getMonth() === month) ? rStart.getDate() : 1;
-            if (startDayOfRes > currentDay) {
-              listItems.push({
-                type: 'available',
-                start: currentDay,
-                end: startDayOfRes - 1
+              sortedReservations.forEach(res => {
+                const rStart = new Date(res.checkIn);
+                const rEnd = new Date(res.checkOut);
+                
+                const startDayOfRes = (rStart.getFullYear() === year && rStart.getMonth() === month) ? rStart.getDate() : 1;
+                if (startDayOfRes > currentDay) {
+                  listItems.push({
+                    type: 'available',
+                    start: currentDay,
+                    end: startDayOfRes - 1
+                  });
+                }
+                
+                const endDayOfRes = (rEnd.getFullYear() === year && rEnd.getMonth() === month) ? rEnd.getDate() : daysInMonth;
+                if (endDayOfRes >= startDayOfRes) {
+                  const resPrice = calculateDetailedPrice(res.checkIn, res.checkOut, res.guests);
+                  listItems.push({
+                    type: 'booked',
+                    start: startDayOfRes,
+                    end: endDayOfRes,
+                    nights: resPrice?.nights,
+                    total: resPrice?.total,
+                    name: maskName(res.name)
+                  });
+                  currentDay = endDayOfRes;
+                }
               });
-            }
-            
-            // 예약 정보 추가
-            const endDayOfRes = (rEnd.getFullYear() === year && rEnd.getMonth() === month) ? rEnd.getDate() : daysInMonth;
-            if (endDayOfRes >= startDayOfRes) {
-              const resPrice = calculateDetailedPrice(res.checkIn, res.checkOut, res.guests);
-              listItems.push({
-                type: 'booked',
-                start: startDayOfRes,
-                end: endDayOfRes,
-                nights: resPrice?.nights,
-                total: resPrice?.total,
-                name: maskName(res.name)
-              });
-              currentDay = endDayOfRes;
-            }
-          });
 
-          // 마지막 예약 이후 공실 확인
-          if (currentDay < daysInMonth) {
-            listItems.push({
-              type: 'available',
-              start: currentDay + 1,
-              end: daysInMonth
-            });
-          }
+              if (currentDay < daysInMonth) {
+                listItems.push({
+                  type: 'available',
+                  start: currentDay + 1,
+                  end: daysInMonth
+                });
+              }
 
-          return (
-            <section key={monthLabel} className={styles.monthSection}>
-              <h4 className={styles.monthHeader}>{monthLabel}</h4>
-              <ul className={styles.monthList}>
-                {listItems.map((item, idx) => (
-                  <li key={idx} className={item.type === 'available' ? styles.itemAvailable : styles.itemBooked}>
-                    {item.type === 'available' ? (
-                      <span>{item.start} ~ {item.end}{t.calendar.Sat.replace(/./, '')}일 {t.calendar.available}</span>
-                    ) : (
-                      <span>
-                        {item.start} - {item.end}일 {item.name} / {item.nights}{t.calendar.days} / {item.total?.toLocaleString()}{t.calendar.won}
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          );
-        })}
+              return (
+                <section key={monthLabel} className={styles.monthSection}>
+                  <h4 className={styles.monthHeader}>{monthLabel}</h4>
+                  <ul className={styles.monthList}>
+                    {listItems.map((item, idx) => (
+                      <li key={idx} className={item.type === 'available' ? styles.itemAvailable : styles.itemBooked}>
+                        {item.type === 'available' ? (
+                          <span>{item.start} ~ {item.end}{t.calendar.Sat.replace(/./, '')}일 {t.calendar.available}</span>
+                        ) : (
+                          <span>
+                            {item.start} - {item.end}일 {item.name} / {item.nights}{t.calendar.days} / {item.total?.toLocaleString()}{t.calendar.won}
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              );
+            })}
+          </div>
+        </div>
       </div>
     );
   };
@@ -273,16 +290,15 @@ export default function CalendarSection() {
         <p className={styles.desc}>{t.contact.desc}</p>
         <button 
           className={styles.viewToggleBtn}
-          onClick={() => setViewMode(viewMode === 'calendar' ? 'list' : 'calendar')}
+          onClick={() => setIsListOpen(true)}
         >
-          {viewMode === 'calendar' ? t.calendar.viewList : t.calendar.viewCalendar}
+          {t.calendar.viewList}
         </button>
       </header>
 
       <div className={styles.content}>
-        {viewMode === 'calendar' ? (
-          <div className={styles.calendarSection}>
-            <div className={styles.calHeader}>
+        <div className={styles.calendarSection}>
+          <div className={styles.calHeader}>
               <button onClick={prevMonth} type="button" className={styles.calNav}>&lt;</button>
               <h3 className={styles.calTitle}>
                 {currentMonth.toLocaleString(
@@ -346,9 +362,8 @@ export default function CalendarSection() {
               <p className={styles.calHint}>{t.calendar.hintSelectOut}</p>
             )}
           </div>
-        ) : (
-          renderListView()
-        )}
+
+        {isListOpen && renderListView()}
 
         <div className={styles.reserveAction}>
           {(!checkIn || !checkOut) ? (
