@@ -53,6 +53,14 @@ export default function CalendarSection() {
       }
       setCheckIn(dateStr);
       setCheckOut(null);
+
+      // 다음 날이 예약되어 있다면 자동으로 체크아웃으로 설정 (편의 기능)
+      const nextDay = new Date(dateStr);
+      nextDay.setDate(nextDay.getDate() + 1);
+      const nextDayStr = nextDay.toISOString().split('T')[0];
+      if (blockedDates.some(b => b.date === nextDayStr)) {
+        setCheckOut(nextDayStr);
+      }
     } else {
       const start = new Date(checkIn);
       const end = new Date(dateStr);
