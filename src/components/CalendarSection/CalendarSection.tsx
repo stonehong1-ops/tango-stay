@@ -228,18 +228,19 @@ export default function CalendarSection() {
               );
 
               const listItems: ListViewItem[] = [];
-              let currentDay = 1;
+              let nextPossibleDay = 1;
 
               sortedReservations.forEach(res => {
                 const rStart = new Date(res.checkIn);
                 const rEnd = new Date(res.checkOut);
                 
                 const startDayOfRes = (rStart.getFullYear() === year && rStart.getMonth() === month) ? rStart.getDate() : 1;
-                if (startDayOfRes > currentDay) {
+                
+                if (startDayOfRes > nextPossibleDay) {
                   listItems.push({
                     type: 'available',
-                    start: currentDay,
-                    end: startDayOfRes - 1
+                    start: nextPossibleDay,
+                    end: startDayOfRes
                   });
                 }
                 
@@ -254,14 +255,14 @@ export default function CalendarSection() {
                     total: resPrice?.total,
                     name: maskName(res.name)
                   });
-                  currentDay = endDayOfRes;
+                  nextPossibleDay = endDayOfRes;
                 }
               });
 
-              if (currentDay < daysInMonth) {
+              if (nextPossibleDay <= daysInMonth) {
                 listItems.push({
                   type: 'available',
-                  start: currentDay + 1,
+                  start: nextPossibleDay,
                   end: daysInMonth
                 });
               }
@@ -273,7 +274,7 @@ export default function CalendarSection() {
                     {listItems.map((item, idx) => (
                       <li key={idx} className={item.type === 'available' ? styles.itemAvailable : styles.itemBooked}>
                         {item.type === 'available' ? (
-                          <span>{item.start} ~ {item.end}{t.calendar.Sat.replace(/./, '')}일 {t.calendar.available}</span>
+                          <span>{item.start} ~ {item.end}일 {t.calendar.available}</span>
                         ) : (
                           <span>
                             {item.start} - {item.end}일 {item.name} / {item.nights}{t.calendar.days} / {item.total?.toLocaleString()}{t.calendar.won}
