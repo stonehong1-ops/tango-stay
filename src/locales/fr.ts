@@ -72,7 +72,9 @@ export default {
     longStayDiscount: 'Réduction long séjour',
     proceedBtn: 'Procéder à la réservation',
     stay: 'Séjour',
-    selectedDate: 'Dates sélectionnées'
+    selectedDate: 'Dates sélectionnées',
+    viewList: 'Voir comme une liste',
+    viewCalendar: 'Voir comme un calendrier'
   },
   location: {
     title: 'Emplacement',

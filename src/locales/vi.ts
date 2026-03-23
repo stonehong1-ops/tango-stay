@@ -72,7 +72,9 @@ export default {
     longStayDiscount: 'Giảm giá lưu trú dài ngày',
     proceedBtn: 'Tiến hành đặt phòng',
     stay: 'Kỳ nghỉ',
-    selectedDate: 'Ngày đã chọn'
+    selectedDate: 'Ngày đã chọn',
+    viewList: 'Xem dưới dạng danh sách',
+    viewCalendar: 'Xem dưới dạng lịch'
   },
   location: {
     title: 'Vị trí',

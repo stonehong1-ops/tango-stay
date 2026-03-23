@@ -72,7 +72,9 @@ export default {
     longStayDiscount: 'Uzun süreli konaklama indirimi',
     proceedBtn: 'Rezervasyona devam et',
     stay: 'Konaklama',
-    selectedDate: 'Seçilen tarihler'
+    selectedDate: 'Seçilen tarihler',
+    viewList: 'Liste olarak görüntüle',
+    viewCalendar: 'Takvim olarak görüntüle'
   },
   location: {
     title: 'Konum',

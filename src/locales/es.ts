@@ -72,7 +72,9 @@ export default {
     longStayDiscount: 'Descuento por estancia larga',
     proceedBtn: 'Proceder a Reservar',
     stay: 'Estancia',
-    selectedDate: 'Fechas seleccionadas'
+    selectedDate: 'Fechas seleccionadas',
+    viewList: 'Ver como lista',
+    viewCalendar: 'Ver como calendario'
   },
   location: {
     title: 'Ubicación',

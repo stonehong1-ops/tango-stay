@@ -23,6 +23,32 @@ export interface BlockedDateInfo {
   checkOut: string;
 }
 
+export interface FullReservation extends ReservationRequest {
+  id: string;
+}
+
+export const getReservationList = async (): Promise<FullReservation[]> => {
+  if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) return [];
+  
+  try {
+    const snapshot = await getDocs(collection(db, "reservations"));
+    const list: FullReservation[] = [];
+    snapshot.forEach((doc: any) => {
+      const data = doc.data();
+      if (data.status === 'cancelled') return;
+      list.push({
+        id: doc.id,
+        ...data
+      } as FullReservation);
+    });
+    // 날짜 순 정렬
+    return list.sort((a, b) => a.checkIn.localeCompare(b.checkIn));
+  } catch (error) {
+    console.error("Error fetching reservation list: ", error);
+    return [];
+  }
+};
+
 export const getReservedDates = async (): Promise<BlockedDateInfo[]> => {
   if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
     console.warn("Firebase api key missing. Returning empty reserved dates.");

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getReservedDates, BlockedDateInfo } from '@/lib/api';
+import { getReservedDates, BlockedDateInfo, getReservationList, FullReservation } from '@/lib/api';
 import { useLanguage } from '@/contexts/LanguageContext';
 import styles from './CalendarSection.module.css';
 
@@ -10,16 +10,23 @@ export default function CalendarSection() {
   const router = useRouter();
   const { t, language } = useLanguage();
   
+  // View mode
+  const [viewMode, setViewMode] = useState<'calendar' | 'list'>('calendar');
+  
   // Dates
   const [currentMonth, setCurrentMonth] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
   const [checkIn, setCheckIn] = useState<string | null>(null);
   const [checkOut, setCheckOut] = useState<string | null>(null);
   const [blockedDates, setBlockedDates] = useState<BlockedDateInfo[]>([]);
+  const [reservations, setReservations] = useState<FullReservation[]>([]);
   const [guests, setGuests] = useState(1);
 
   useEffect(() => {
     getReservedDates().then(dates => {
        setBlockedDates(dates);
+    });
+    getReservationList().then(list => {
+       setReservations(list);
     });
   }, []);
 
@@ -73,11 +80,15 @@ export default function CalendarSection() {
     }
   };
 
-  const calculateDetailedPrice = () => {
-    if (!checkIn || !checkOut) return null;
+  const calculateDetailedPrice = (ci?: string, co?: string, g?: number) => {
+    const startStr = ci || checkIn;
+    const endStr = co || checkOut;
+    const gCount = g || guests;
     
-    const start = new Date(checkIn);
-    const end = new Date(checkOut);
+    if (!startStr || !endStr) return null;
+    
+    const start = new Date(startStr);
+    const end = new Date(endStr);
     const nights = Math.max(1, Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)));
     
     let baseNightly = 0;
@@ -97,13 +108,12 @@ export default function CalendarSection() {
         currentDate.setDate(start.getDate() + i);
         const day = currentDate.getDay();
         
-        // 날짜를 YYYY-MM-DD 형태로 변환 (로컬 시간 기준 오류 방지 위해 직접 조합식 사용)
         const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth()+1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
         
         baseNightly += 80000;
         
-        if (guests > 1) {
-            guestSurcharge += (guests - 1) * 10000;
+        if (gCount > 1) {
+            guestSurcharge += (gCount - 1) * 10000;
         }
         
         const isWeekend = day === 5 || day === 6;
@@ -146,79 +156,199 @@ export default function CalendarSection() {
   const todayObj = new Date();
   const todayStr = `${todayObj.getFullYear()}-${String(todayObj.getMonth() + 1).padStart(2, '0')}-${String(todayObj.getDate()).padStart(2, '0')}`;
 
+  interface ListViewItem {
+    type: 'available' | 'booked';
+    start: number;
+    end: number;
+    nights?: number;
+    total?: number;
+    name?: string;
+  }
+
+  const renderListView = () => {
+    const monthsToShow = [];
+    const now = new Date();
+    // 현재 월부터 12월까지
+    for (let m = now.getMonth(); m <= 11; m++) {
+      monthsToShow.push(new Date(now.getFullYear(), m, 1));
+    }
+
+    const maskName = (name: string) => {
+      if (!name) return "***";
+      if (name.length <= 2) return name.substring(0, 1) + "*";
+      return name.substring(0, 1) + "*" + name.substring(2);
+    };
+
+    return (
+      <div className={styles.listView}>
+        {monthsToShow.map((mDate) => {
+          const year = mDate.getFullYear();
+          const month = mDate.getMonth();
+          const daysInMonth = new Date(year, month + 1, 0).getDate();
+          
+          // 해당 월의 예약 필터링
+          const sortedReservations = reservations.filter(r => {
+            const rStart = new Date(r.checkIn);
+            const rEnd = new Date(r.checkOut);
+            const mStart = new Date(year, month, 1);
+            const mEnd = new Date(year, month, daysInMonth);
+            return (rStart <= mEnd && rEnd >= mStart);
+          }).sort((a, b) => a.checkIn.localeCompare(b.checkIn));
+
+          const monthLabel = mDate.toLocaleString(
+            language === 'ko' ? 'ko' : language,
+            { year: 'numeric', month: 'long' }
+          );
+
+          // 공실 및 예약 목록 생성 로직
+          const listItems: ListViewItem[] = [];
+          let currentDay = 1;
+
+          sortedReservations.forEach(res => {
+            const rStart = new Date(res.checkIn);
+            const rEnd = new Date(res.checkOut);
+            
+            // 예약 시작 전 공실 확인
+            const startDayOfRes = (rStart.getFullYear() === year && rStart.getMonth() === month) ? rStart.getDate() : 1;
+            if (startDayOfRes > currentDay) {
+              listItems.push({
+                type: 'available',
+                start: currentDay,
+                end: startDayOfRes - 1
+              });
+            }
+            
+            // 예약 정보 추가
+            const endDayOfRes = (rEnd.getFullYear() === year && rEnd.getMonth() === month) ? rEnd.getDate() : daysInMonth;
+            if (endDayOfRes >= startDayOfRes) {
+              const resPrice = calculateDetailedPrice(res.checkIn, res.checkOut, res.guests);
+              listItems.push({
+                type: 'booked',
+                start: startDayOfRes,
+                end: rEnd.getDate(), // 체크아웃 날짜 그대로 표시
+                nights: resPrice?.nights,
+                total: resPrice?.total,
+                name: maskName(res.name)
+              });
+              currentDay = rEnd.getDate();
+            }
+          });
+
+          // 마지막 예약 이후 공실 확인
+          if (currentDay < daysInMonth) {
+            listItems.push({
+              type: 'available',
+              start: currentDay + 1,
+              end: daysInMonth
+            });
+          }
+
+          return (
+            <section key={monthLabel} className={styles.monthSection}>
+              <h4 className={styles.monthHeader}>{monthLabel}</h4>
+              <ul className={styles.monthList}>
+                {listItems.map((item, idx) => (
+                  <li key={idx} className={item.type === 'available' ? styles.itemAvailable : styles.itemBooked}>
+                    {item.type === 'available' ? (
+                      <span>{item.start} ~ {item.end}{t.calendar.Sat.replace(/./, '')}일 {t.calendar.available}</span>
+                    ) : (
+                      <span>
+                        {item.start} - {item.end}일 {item.name} / {item.nights}{t.calendar.days} / {item.total?.toLocaleString()}{t.calendar.won}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <div className={styles.container} id="reserve">
       <header className={styles.header}>
         <h2 className={styles.title}>{t.calendar.title}</h2>
         <p className={styles.desc}>{t.contact.desc}</p>
+        <button 
+          className={styles.viewToggleBtn}
+          onClick={() => setViewMode(viewMode === 'calendar' ? 'list' : 'calendar')}
+        >
+          {viewMode === 'calendar' ? t.calendar.viewList : t.calendar.viewCalendar}
+        </button>
       </header>
 
       <div className={styles.content}>
-        <div className={styles.calendarSection}>
-          <div className={styles.calHeader}>
-            <button onClick={prevMonth} type="button" className={styles.calNav}>&lt;</button>
-            <h3 className={styles.calTitle}>
-              {currentMonth.toLocaleString(
-                language === 'ko' ? 'ko' : 
-                language === 'en' ? 'en' : 
-                language === 'ja' ? 'ja' : 
-                language === 'zh-CN' ? 'zh-Hans' : 
-                language === 'zh-TW' ? 'zh-Hant' : language,
-                { year: 'numeric', month: 'long' }
-              )}
-            </h3>
-            <button onClick={nextMonth} type="button" className={styles.calNav}>&gt;</button>
-          </div>
-          
-          <div className={styles.weekdays}>
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
-              <div key={d}>{t.calendar[d as keyof typeof t.calendar]}</div>
-            ))}
-          </div>
-          
-          <div className={styles.daysGrid}>
-            {days.map((dStr, idx) => {
-              if (!dStr) return <div key={`empty-${idx}`} className={styles.emptyDay} />;
-              
-              const isBlocked = blockedDates.some(b => b.date === dStr);
-              const isPast = dStr < todayStr;
-              const isToday = dStr === todayStr;
-              const isCheckIn = checkIn === dStr;
-              const isCheckOut = checkOut === dStr;
-              const isInRange = checkIn && checkOut && dStr > checkIn && dStr < checkOut;
-              
-              let classNames = `${styles.dayBtn}`;
-              if (isPast) classNames += ` ${styles.past}`;
-              if (isToday) classNames += ` ${styles.today}`;
-              if (isBlocked) classNames += ` ${styles.booked}`;
-              if (isCheckIn || isCheckOut) classNames += ` ${styles.selected}`;
-              if (isInRange) classNames += ` ${styles.inRange}`;
+        {viewMode === 'calendar' ? (
+          <div className={styles.calendarSection}>
+            <div className={styles.calHeader}>
+              <button onClick={prevMonth} type="button" className={styles.calNav}>&lt;</button>
+              <h3 className={styles.calTitle}>
+                {currentMonth.toLocaleString(
+                  language === 'ko' ? 'ko' : 
+                  language === 'en' ? 'en' : 
+                  language === 'ja' ? 'ja' : 
+                  language === 'zh-CN' ? 'zh-Hans' : 
+                  language === 'zh-TW' ? 'zh-Hant' : language,
+                  { year: 'numeric', month: 'long' }
+                )}
+              </h3>
+              <button onClick={nextMonth} type="button" className={styles.calNav}>&gt;</button>
+            </div>
+            
+            <div className={styles.weekdays}>
+              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+                <div key={d}>{t.calendar[d as keyof typeof t.calendar]}</div>
+              ))}
+            </div>
+            
+            <div className={styles.daysGrid}>
+              {days.map((dStr, idx) => {
+                if (!dStr) return <div key={`empty-${idx}`} className={styles.emptyDay} />;
+                
+                const isBlocked = blockedDates.some(b => b.date === dStr);
+                const isPast = dStr < todayStr;
+                const isToday = dStr === todayStr;
+                const isCheckIn = checkIn === dStr;
+                const isCheckOut = checkOut === dStr;
+                const isInRange = checkIn && checkOut && dStr > checkIn && dStr < checkOut;
+                
+                let classNames = `${styles.dayBtn}`;
+                if (isPast) classNames += ` ${styles.past}`;
+                if (isToday) classNames += ` ${styles.today}`;
+                if (isBlocked) classNames += ` ${styles.booked}`;
+                if (isCheckIn || isCheckOut) classNames += ` ${styles.selected}`;
+                if (isInRange) classNames += ` ${styles.inRange}`;
 
-              const dayNum = parseInt(dStr.split('-')[2]);
+                const dayNum = parseInt(dStr.split('-')[2]);
 
-              return (
-                <button 
-                  key={dStr} 
-                  type="button" 
-                  disabled={isPast}
-                  className={classNames}
-                  onClick={() => handleDateClick(dStr)}
-                >
-                  {dayNum}
-                </button>
-              );
-            })}
+                return (
+                  <button 
+                    key={dStr} 
+                    type="button" 
+                    disabled={isPast}
+                    className={classNames}
+                    onClick={() => handleDateClick(dStr)}
+                  >
+                    {dayNum}
+                  </button>
+                );
+              })}
+            </div>
+            <div className={styles.legend}>
+              <span className={styles.legItem}><span className={styles.box} /> {t.calendar.available}</span>
+              <span className={styles.legItem}><span className={`${styles.box} ${styles.booked}`} /> {t.calendar.booked}</span>
+              <span className={styles.legItem}><span className={`${styles.box} ${styles.selected}`} /> {t.calendar.selected}</span>
+            </div>
+            
+            {!checkOut && checkIn && (
+              <p className={styles.calHint}>{t.calendar.hintSelectOut}</p>
+            )}
           </div>
-          <div className={styles.legend}>
-            <span className={styles.legItem}><span className={styles.box} /> {t.calendar.available}</span>
-            <span className={styles.legItem}><span className={`${styles.box} ${styles.booked}`} /> {t.calendar.booked}</span>
-            <span className={styles.legItem}><span className={`${styles.box} ${styles.selected}`} /> {t.calendar.selected}</span>
-          </div>
-          
-          {!checkOut && checkIn && (
-            <p className={styles.calHint}>{t.calendar.hintSelectOut}</p>
-          )}
-        </div>
+        ) : (
+          renderListView()
+        )}
 
         <div className={styles.reserveAction}>
           {(!checkIn || !checkOut) ? (

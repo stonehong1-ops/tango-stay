@@ -72,7 +72,9 @@ export default {
     longStayDiscount: '长住折扣',
     proceedBtn: '继续预订',
     stay: '住宿',
-    selectedDate: '选定日期'
+    selectedDate: '选定日期',
+    viewList: '列表显示',
+    viewCalendar: '日历显示'
   },
   location: {
     title: '住宿位置',

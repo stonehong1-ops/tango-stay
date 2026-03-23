@@ -72,7 +72,9 @@ export default {
     longStayDiscount: '長期滞在割引',
     proceedBtn: '予約を進める',
     stay: '宿泊',
-    selectedDate: '選択された日付'
+    selectedDate: '選択された日付',
+    viewList: 'リストで表示',
+    viewCalendar: 'カレンダーで表示'
   },
   location: {
     title: 'アクセス',

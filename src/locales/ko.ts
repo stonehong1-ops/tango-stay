@@ -72,7 +72,9 @@ export default {
     longStayDiscount: '장기 숙박 할인',
     proceedBtn: '예약 진행하기',
     stay: '투숙',
-    selectedDate: '선택한 날짜'
+    selectedDate: '선택한 날짜',
+    viewList: '목록으로 보기',
+    viewCalendar: '달력으로 보기'
   },
   location: {
     title: '숙소 위치',
