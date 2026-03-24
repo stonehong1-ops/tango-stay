@@ -41,10 +41,6 @@ export default function Header() {
             <option value="tr">Türkçe</option>
           </select>
 
-          <a href="#reserve" className={styles.reserveBtn} onClick={closeMenu}>
-            {t.calendar.reserveBtn}
-          </a>
-          
           <button 
             className={styles.hamburgerBtn} 
             onClick={toggleMenu}
@@ -55,6 +51,7 @@ export default function Header() {
             <div className={`${styles.hamburgerLine} ${isMenuOpen ? styles.open : ''}`}></div>
           </button>
         </div>
+
       </div>
 
       {isMenuOpen && (
@@ -63,7 +60,7 @@ export default function Header() {
             <a href="#intro" onClick={closeMenu}>{t.header.story}</a>
             <a href="#location" onClick={closeMenu}>{t.header.location}</a>
             <a href="#guide" onClick={closeMenu}>{t.header.guide}</a>
-            <a href="#contact" onClick={closeMenu}>{t.header.contact}</a>
+            <a href="#contact" onClick={closeMenu}>{t.intro.title} & {t.header.contact}</a>
           </nav>
         </div>
       )}

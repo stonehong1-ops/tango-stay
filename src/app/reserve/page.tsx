@@ -13,11 +13,18 @@ function ReserveForm() {
   
   const checkIn = searchParams.get('checkIn');
   const checkOut = searchParams.get('checkOut');
+  const stayId = searchParams.get('stayId') || 'hapjeong'; // stayId 추가
   const guests = parseInt(searchParams.get('guests') || '1');
+  
+  // @ts-ignore
+  const stayCal = t.stays[stayId]?.calendar || t.stays.hapjeong.calendar;
+  // @ts-ignore
+  const stayRes = t.stays[stayId]?.reserve || t.stays.hapjeong.reserve;
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const [name, setName] = useState('');
+  const [countryCode, setCountryCode] = useState('+82');
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
 
@@ -85,9 +92,13 @@ function ReserveForm() {
 
     setIsSubmitting(true);
     
+    const cleanPhone = phone.replace(/-/g, '').trim();
+    const fullPhone = countryCode + cleanPhone;
+
     const formData = {
-      name, 
-      phone, 
+      stayId, // stayId 추가
+      name: name.trim(), 
+      phone: fullPhone, 
       checkIn, 
       checkOut, 
       guests, 
@@ -97,7 +108,17 @@ function ReserveForm() {
     const result = await submitReservation(formData);
     
     if (result.success || !process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
-      router.push('/complete');
+      const params = new URLSearchParams({
+        stayId, // stayId 전달
+        name: name.trim(),
+        phone: countryCode + cleanPhone,
+        checkIn: checkIn || '',
+        checkOut: checkOut || '',
+        guests: guests.toString(),
+        total: totalAmount.toString(),
+        msg: message
+      });
+      router.push(`/complete?${params.toString()}`);
     } else {
       alert(t.reserve.errorFail);
       setIsSubmitting(false);
@@ -124,25 +145,51 @@ function ReserveForm() {
 
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.formGroup}>
-              <label htmlFor="name">{t.reserve.nameLabel}</label>
+              <label htmlFor="name">{t.reserve.nameLabel} <span className={styles.required}>*</span></label>
               <input 
                 type="text" 
                 id="name" 
                 value={name} 
                 onChange={(e) => setName(e.target.value)} 
                 placeholder={t.reserve.namePlace} 
+                required
               />
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="phone">{t.reserve.phoneLabel}</label>
-              <input 
-                type="tel" 
-                id="phone" 
-                value={phone} 
-                onChange={(e) => setPhone(e.target.value)} 
-                placeholder={t.reserve.phonePlace} 
-              />
+              <label htmlFor="phone">{t.reserve.phoneLabel} <span className={styles.required}>*</span></label>
+              <div className={styles.phoneInputContainer}>
+                <select 
+                  className={styles.countrySelect}
+                  value={countryCode}
+                  onChange={(e) => setCountryCode(e.target.value)}
+                >
+                  <option value="+82">KR (+82)</option>
+                  <option value="+1">US (+1)</option>
+                  <option value="+81">JP (+81)</option>
+                  <option value="+86">CN (+86)</option>
+                  <option value="+84">VN (+84)</option>
+                  <option value="+63">PH (+63)</option>
+                  <option value="+66">TH (+66)</option>
+                  <option value="+65">SG (+65)</option>
+                  <option value="+60">MY (+60)</option>
+                  <option value="+886">TW (+886)</option>
+                  <option value="+34">ES (+34)</option>
+                  <option value="+33">FR (+33)</option>
+                  <option value="+39">IT (+39)</option>
+                  <option value="+44">UK (+44)</option>
+                  <option value="+49">DE (+49)</option>
+                  <option value="+90">TR (+90)</option>
+                </select>
+                <input 
+                  type="tel" 
+                  id="phone" 
+                  value={phone} 
+                  onChange={(e) => setPhone(e.target.value)} 
+                  placeholder={t.reserve.phonePlace} 
+                  required
+                />
+              </div>
             </div>
 
             <div className={styles.formGroup}>

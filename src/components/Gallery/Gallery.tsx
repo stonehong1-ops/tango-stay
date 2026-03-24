@@ -7,7 +7,7 @@ import styles from './Gallery.module.css';
 
 const baseCategories = ['전체', '거실', '침실', '키친', '화장실', '뷰'];
 
-const rawImageData = [
+const hapjeongImages = [
   // 거실
   { id: 'img-1', categoryId: 1, src: '/images/20260317_143309.jpg' },
   { id: 'img-2', categoryId: 1, src: '/images/20260320_105323.jpg' },
@@ -38,16 +38,49 @@ const rawImageData = [
   { id: 'img-19', categoryId: 5, src: '/images/20260310_184607.jpg' },
 ];
 
-export default function Gallery() {
+const deokeunImages = [
+  { id: 'd-1', categoryId: 1, src: '/images/staysangam/1. 메인.jpg' },
+  { id: 'd-2', categoryId: 2, src: '/images/staysangam/2. 침실.jpg' },
+  { id: 'd-3', categoryId: 1, src: '/images/staysangam/3. 출입문과 입구 구조.jpg' },
+  { id: 'd-4', categoryId: 1, src: '/images/staysangam/4. 책상과 화장대.jpg' },
+  { id: 'd-5', categoryId: 1, src: '/images/staysangam/5. 아늑한 환경.jpg' },
+  { id: 'd-6', categoryId: 1, src: '/images/staysangam/6. 구글TV, OTT 무료.jpg' },
+  { id: 'd-7', categoryId: 2, src: '/images/staysangam/7. 넓은 옷장.jpg' },
+  { id: 'd-8', categoryId: 1, src: '/images/staysangam/8. 공기청정기, 청소기, 스팀청소기.jpg' },
+  { id: 'd-9', categoryId: 3, src: '/images/staysangam/9. 잘 준비된 주방.jpg' },
+  { id: 'd-10', categoryId: 3, src: '/images/staysangam/10. 조리기구 완비.jpg' },
+  { id: 'd-11', categoryId: 3, src: '/images/staysangam/11. 조리기구 완비.jpg' },
+  { id: 'd-12', categoryId: 3, src: '/images/staysangam/12. 커피와 녹차 무료 제공.jpg' },
+  { id: 'd-13', categoryId: 3, src: '/images/staysangam/13. 햇반, 라면, 컵라면 등 무료.jpg' },
+  { id: 'd-14', categoryId: 4, src: '/images/staysangam/14. 모든 소모품 무료.jpg' },
+  { id: 'd-15', categoryId: 4, src: '/images/staysangam/15. 비데 사용 가능.jpg' },
+  { id: 'd-16', categoryId: 4, src: '/images/staysangam/16. 분리된 샤워실.jpg' },
+  { id: 'd-17', categoryId: 1, src: '/images/staysangam/17. 1차 치료 키트 (진통제, 소화제 등 포함).jpg' },
+  { id: 'd-18', categoryId: 5, src: '/images/staysangam/18. 피트니스센터 무료 이용.jpg' },
+  { id: 'd-19', categoryId: 5, src: '/images/staysangam/19. 외부 건조 가능.jpg' }
+];
+
+const galleryDataMap: Record<string, any[]> = {
+  hapjeong: hapjeongImages,
+  deokeun: deokeunImages,
+  hongdae: hapjeongImages
+};
+
+export default function Gallery({ stayId = 'hapjeong' }: { stayId?: string }) {
   const { t } = useLanguage();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
-  const imageData = rawImageData.map((img, idx) => ({
+  // @ts-ignore - t.stays dynamic indexing
+  const stayGallery = t.stays[stayId]?.gallery || t.stays.hapjeong.gallery;
+
+  const currentImages = galleryDataMap[stayId] || galleryDataMap['hapjeong'];
+
+  const imageData = currentImages.map((img, idx) => ({
     ...img,
-    category: t.gallery.categories[img.categoryId],
-    desc: t.gallery.descriptions[idx]
+    category: stayGallery.categories[img.categoryId],
+    desc: stayGallery.descriptions[idx]
   }));
 
   const minSwipeDistance = 50;
@@ -143,7 +176,7 @@ export default function Gallery() {
           sizes="(max-width: 1024px) 100vw, 1024px"
         />
         <button className={styles.seeMoreBtn}>
-          {t.gallery.more} ({imageData.length})
+          {stayGallery.more} ({imageData.length})
         </button>
       </div>
 

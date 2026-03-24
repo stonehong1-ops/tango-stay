@@ -13,6 +13,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .logo {
@@ -115,8 +116,20 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .container {
-    padding: 0.8rem 1rem;
+    padding: 0.8rem 1.5rem;
+  }
+  
+  .logo {
+    flex: 1;
+  }
+
+  .reserveBtn {
+    width: 100%;
+    order: 10;
+    text-align: center;
+    margin-top: 0.5rem;
+    padding: 0.6rem;
   }
 }

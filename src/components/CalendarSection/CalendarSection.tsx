@@ -2,16 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getReservedDates, BlockedDateInfo, getReservationList, FullReservation } from '@/lib/api';
+import { getReservedDates, BlockedDateInfo, getReservationList, FullReservation, cancelReservation } from '@/lib/api';
 import { useLanguage } from '@/contexts/LanguageContext';
 import styles from './CalendarSection.module.css';
 
-export default function CalendarSection() {
+export default function CalendarSection({ stayId = 'hapjeong' }: { stayId?: string }) {
   const router = useRouter();
   const { t, language } = useLanguage();
   
+  // @ts-ignore
+  const stayCal = t.stays[stayId]?.calendar || t.stays.hapjeong.calendar;
+
   // View mode
   const [isListOpen, setIsListOpen] = useState(false);
+  const [selectedResForDetail, setSelectedResForDetail] = useState<FullReservation | null>(null);
   
   // Dates
   const [currentMonth, setCurrentMonth] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
@@ -22,17 +26,17 @@ export default function CalendarSection() {
   const [guests, setGuests] = useState(1);
 
   useEffect(() => {
-    getReservedDates().then(dates => {
+    getReservedDates(stayId).then(dates => {
        setBlockedDates(dates);
     });
-    getReservationList().then(list => {
+    getReservationList(stayId).then(list => {
        setReservations(list);
     });
-  }, []);
+  }, [stayId]);
 
   // 모달 오픈 시 본문 스크롤 방지
   useEffect(() => {
-    if (isListOpen) {
+    if (isListOpen || selectedResForDetail) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -40,15 +44,19 @@ export default function CalendarSection() {
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [isListOpen]);
+  }, [isListOpen, selectedResForDetail]);
 
-  const handleDateClick = (dateStr: string) => {
+  const handleDateClick = async (dateStr: string) => {
     const isDateBlocked = blockedDates.some(b => b.date === dateStr);
 
     if (!checkIn || (checkIn && checkOut)) {
       if (isDateBlocked) {
-        const blockedInfo = blockedDates.find(b => b.date === dateStr);
-        alert(`${t.calendar.blockedAlert} ${blockedInfo?.maskedName}\n${t.calendar.period} ${blockedInfo?.checkIn} ~ ${blockedInfo?.checkOut}`);
+        const fullRes = reservations.find(r => 
+          dateStr >= r.checkIn && dateStr < r.checkOut
+        );
+        if (fullRes) {
+          setSelectedResForDetail(fullRes);
+        }
         return;
       }
       setCheckIn(dateStr);
@@ -130,7 +138,8 @@ export default function CalendarSection() {
         
         const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth()+1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
         
-        baseNightly += 80000;
+        const basePrice = stayId === 'deokeun' ? 60000 : 80000;
+        baseNightly += basePrice;
         
         if (gCount > 1) {
             guestSurcharge += (gCount - 1) * 10000;
@@ -156,7 +165,7 @@ export default function CalendarSection() {
 
   const handleReserveClick = () => {
     if (!checkIn || !checkOut) return;
-    router.push(`/reserve?checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}`);
+    router.push(`/reserve?stayId=${stayId}&checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}`);
   };
 
   const year = currentMonth.getFullYear();
@@ -183,6 +192,8 @@ export default function CalendarSection() {
     nights?: number;
     total?: number;
     name?: string;
+    isContinued?: boolean;
+    isSpanning?: boolean;
   }
 
   const renderListView = () => {
@@ -245,6 +256,10 @@ export default function CalendarSection() {
                 }
                 
                 const endDayOfRes = (rEnd.getFullYear() === year && rEnd.getMonth() === month) ? rEnd.getDate() : daysInMonth;
+                
+                const isContinued = rStart.getMonth() !== month || rStart.getFullYear() !== year;
+                const isSpanning = rEnd.getMonth() !== month || rEnd.getFullYear() !== year;
+
                 if (endDayOfRes >= startDayOfRes) {
                   const resPrice = calculateDetailedPrice(res.checkIn, res.checkOut, res.guests);
                   listItems.push({
@@ -253,13 +268,15 @@ export default function CalendarSection() {
                     end: endDayOfRes,
                     nights: resPrice?.nights,
                     total: resPrice?.total,
-                    name: maskName(res.name)
+                    name: maskName(res.name),
+                    isContinued,
+                    isSpanning
                   });
                   nextPossibleDay = endDayOfRes;
                 }
               });
 
-              if (nextPossibleDay <= daysInMonth) {
+              if (nextPossibleDay < daysInMonth) {
                 listItems.push({
                   type: 'available',
                   start: nextPossibleDay,
@@ -276,8 +293,12 @@ export default function CalendarSection() {
                         {item.type === 'available' ? (
                           <span>{item.start} ~ {item.end}일 {t.calendar.available}</span>
                         ) : (
-                          <span>
-                            {item.start} - {item.end}일 {item.name} / {item.nights}{t.calendar.days} / {item.total?.toLocaleString()}{t.calendar.won}
+                          <span className={item.isContinued ? styles.continuedItem : ''}>
+                            {item.isContinued ? '↳ ' : ''}
+                            {item.start} - {item.end}일 {item.name} / 
+                            {item.isContinued || item.isSpanning ? ` (총 ${item.nights}${t.calendar.days}) ` : ` ${item.nights}${t.calendar.days} `} / 
+                            {item.total?.toLocaleString()}{t.calendar.won} 
+                            {item.isSpanning ? ' →' : ''}
                           </span>
                         )}
                       </li>
@@ -291,12 +312,100 @@ export default function CalendarSection() {
       </div>
     );
   };
+  
+  const renderDetailModal = () => {
+    if (!selectedResForDetail) return null;
+    const res = selectedResForDetail;
+
+    const maskName = (name: string) => {
+      if (name.length <= 1) return name;
+      if (name.length === 2) return name[0] + '*';
+      return name[0] + '*'.repeat(name.length - 2) + name[name.length - 1];
+    };
+
+    const calculateNights = (checkIn: string, checkOut: string) => {
+      const start = new Date(checkIn);
+      const end = new Date(checkOut);
+      const diffTime = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+      return diffTime;
+    };
+
+    const nights = calculateNights(res.checkIn, res.checkOut);
+
+    const handleCancel = async () => {
+      const confirmMsg = language === 'ko' 
+        ? '정말 이 예약을 취소(삭제)하시겠습니까?' 
+        : 'Are you sure you want to cancel this reservation?';
+      
+      if (window.confirm(confirmMsg)) {
+        const result = await cancelReservation(res.id);
+        if (result.success) {
+          alert(language === 'ko' ? '취소되었습니다.' : 'Cancelled successfully.');
+          setSelectedResForDetail(null);
+          // 데이터 새로고침
+          const [dates, list] = await Promise.all([getReservedDates(), getReservationList()]);
+          setBlockedDates(dates);
+          setReservations(list);
+        }
+      }
+    };
+
+    return (
+      <div className={styles.modalOverlay} onClick={() => setSelectedResForDetail(null)}>
+        <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+          <header className={styles.modalHeader}>
+            <h3>{language === 'ko' ? '예약 상세 정보' : 'Reservation Detail'}</h3>
+            <button className={styles.closeBtn} onClick={() => setSelectedResForDetail(null)} aria-label="Close">
+              &times;
+            </button>
+          </header>
+          <div className={styles.detailBody}>
+            <div className={styles.detailRow}>
+              <span className={styles.detailLabel}>{language === 'ko' ? '예약자' : 'Guest'}</span>
+              <span className={styles.detailValue}>{maskName(res.name)}</span>
+            </div>
+            <div className={styles.detailRow}>
+              <span className={styles.detailLabel}>{language === 'ko' ? '연락처' : 'Contact'}</span>
+              <span className={styles.detailValue}>{res.phone}</span>
+            </div>
+            <div className={styles.detailRow}>
+              <span className={styles.detailLabel}>{language === 'ko' ? '기간' : 'Period'}</span>
+              <span className={styles.detailValue}>
+                {res.checkIn} ~ {res.checkOut}
+                <span className={styles.nightCount}>
+                  ({nights}{language === 'ko' ? '박' : ' Nights'})
+                </span>
+              </span>
+            </div>
+            <div className={styles.detailRow}>
+              <span className={styles.detailLabel}>{language === 'ko' ? '인원' : 'Guests'}</span>
+              <span className={styles.detailValue}>{res.guests}{language === 'ko' ? '명' : ' Guests'}</span>
+            </div>
+            {res.message && (
+              <div className={styles.detailRow}>
+                <span className={styles.detailLabel}>{language === 'ko' ? '요청사항' : 'Request'}</span>
+                <p className={styles.detailText}>{res.message}</p>
+              </div>
+            )}
+          </div>
+          <footer className={styles.modalFooter}>
+            <button className={styles.secondaryBtn} onClick={() => setSelectedResForDetail(null)}>
+              {language === 'ko' ? '닫기' : 'Close'}
+            </button>
+            <button className={styles.deleteBtn} onClick={handleCancel}>
+              {language === 'ko' ? '취소(삭제)' : 'Cancel (Delete)'}
+            </button>
+          </footer>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className={styles.container} id="reserve">
       <header className={styles.header}>
-        <h2 className={styles.title}>{t.calendar.title}</h2>
-        <p className={styles.desc}>{t.contact.desc}</p>
+        <h2 className={styles.title}>{stayCal.title}</h2>
+        <p className={styles.desc}>{t.common.contact.desc}</p>
         <button 
           className={styles.viewToggleBtn}
           onClick={() => setIsListOpen(true)}
@@ -373,17 +482,18 @@ export default function CalendarSection() {
           </div>
 
         {isListOpen && renderListView()}
+        {selectedResForDetail && renderDetailModal()}
 
         <div className={styles.reserveAction}>
           {(!checkIn || !checkOut) ? (
             <div className={styles.baseInfoList}>
-              <h3>{t.calendar.feeGuideTitle}</h3>
+              <h3>{stayCal.feeGuideTitle}</h3>
               <ul>
-                <li><strong>{t.calendar.feeGuideLines[0]}</strong></li>
-                <li>{t.calendar.feeGuideLines[1]}</li>
-                <li>{t.calendar.feeGuideLines[2]}</li>
-                <li>{t.calendar.feeGuideLines[3]}</li>
-                <li><strong>{t.calendar.feeGuideLines[4]}</strong></li>
+                <li><strong>{stayCal.feeGuideLines[0]}</strong></li>
+                <li>{stayCal.feeGuideLines[1]}</li>
+                <li>{stayCal.feeGuideLines[2]}</li>
+                <li>{stayCal.feeGuideLines[3]}</li>
+                <li><strong>{stayCal.feeGuideLines[4]}</strong></li>
               </ul>
               <p className={styles.infoHint}>{t.calendar.hintSelectDates}</p>
             </div>

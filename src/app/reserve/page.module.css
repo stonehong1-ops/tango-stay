@@ -145,6 +145,12 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
+@media (max-width: 480px) {
+  .form {
+    padding: 1.25rem;
+  }
+}
+
 .formGroup {
   display: flex;
   flex-direction: column;
@@ -155,6 +161,32 @@
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--foreground);
+}
+
+.required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.phoneInputContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.countrySelect {
+  width: 100px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 360px) {
+  .countrySelect {
+    width: 85px;
+  }
+}
+
+.phoneInputContainer input {
+  flex: 1;
+  min-width: 0;
 }
 
 .formGroup input,

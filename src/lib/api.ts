@@ -1,7 +1,8 @@
-import { collection, addDoc, getDocs, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, getDocs, serverTimestamp, doc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface ReservationRequest {
+  stayId: string;
   name: string;
   phone: string;
   checkIn: string;
@@ -27,7 +28,7 @@ export interface FullReservation extends ReservationRequest {
   id: string;
 }
 
-export const getReservationList = async (): Promise<FullReservation[]> => {
+export const getReservationList = async (stayId?: string): Promise<FullReservation[]> => {
   if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) return [];
   
   try {
@@ -36,6 +37,7 @@ export const getReservationList = async (): Promise<FullReservation[]> => {
     snapshot.forEach((doc: any) => {
       const data = doc.data();
       if (data.status === 'cancelled') return;
+      if (stayId && data.stayId !== stayId) return; // 필터링
       list.push({
         id: doc.id,
         ...data
@@ -49,7 +51,7 @@ export const getReservationList = async (): Promise<FullReservation[]> => {
   }
 };
 
-export const getReservedDates = async (): Promise<BlockedDateInfo[]> => {
+export const getReservedDates = async (stayId?: string): Promise<BlockedDateInfo[]> => {
   if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
     console.warn("Firebase api key missing. Returning empty reserved dates.");
     return [];
@@ -62,6 +64,7 @@ export const getReservedDates = async (): Promise<BlockedDateInfo[]> => {
     snapshot.forEach((doc: any) => {
       const data = doc.data();
       if (data.status === 'cancelled') return;
+      if (stayId && data.stayId !== stayId) return; // 필터링
       
       const start = new Date(data.checkIn);
       const end = new Date(data.checkOut);
@@ -99,6 +102,19 @@ export const submitReservation = async (data: ReservationRequest) => {
     return { success: true, id: docRef.id };
   } catch (error) {
     console.error("Error adding reservation: ", error);
+    return { success: false, error };
+  }
+};
+
+export const cancelReservation = async (id: string) => {
+  if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) return { success: true };
+  
+  try {
+    const docRef = doc(db, "reservations", id);
+    await updateDoc(docRef, { status: "cancelled" });
+    return { success: true };
+  } catch (error) {
+    console.error("Error cancelling reservation: ", error);
     return { success: false, error };
   }
 };
