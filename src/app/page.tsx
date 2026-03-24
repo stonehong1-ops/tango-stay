@@ -49,9 +49,6 @@ export default function Home() {
 
       {/* 6. Contact Section */}
       <ContactSection />
-
-      {/* 7. Footer (Terms & Privacy) */}
-      <Footer />
     </div>
   );
 }

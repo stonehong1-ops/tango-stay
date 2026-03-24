@@ -60,7 +60,7 @@ export default function Header() {
             <a href="#intro" onClick={closeMenu}>{t.header.story}</a>
             <a href="#location" onClick={closeMenu}>{t.header.location}</a>
             <a href="#guide" onClick={closeMenu}>{t.header.guide}</a>
-            <a href="#contact" onClick={closeMenu}>{t.intro.title} & {t.header.contact}</a>
+            <a href="#contact" onClick={closeMenu}>{t.common.story.title} & {t.header.contact}</a>
           </nav>
         </div>
       )}
